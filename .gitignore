@@ -1,0 +1,32 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/prototipo1/dist
+/prototipo1/tmp
+/prototipo1/out-tsc
+/prototipo1/bazel-out
+
+# Node
+/prototipo1/node_modules
+/prototipo1/npm-debug.log
+/prototipo1/yarn-error.log
+
+# Angular
+/prototipo1/.angular
+
+# IDEs and editors
+/prototipo1/.idea/
+/prototipo1/.project
+/prototipo1/.classpath
+/prototipo1/.c9/
+*.launch
+/prototipo1/.settings/
+/prototipo1/*.sublime-workspace
+
+# Visual Studio Code
+/prototipo1/.vscode
+!/prototipo1/.vscode/settings.json
+!/prototipo1/.vscode/tasks.json
+!/prototipo1/.vscode/launch.json
+!/prototipo1/.vscode/extensions.json
+/prototipo1/.history/*
