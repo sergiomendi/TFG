@@ -1,32 +1,30 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
 # Compiled output
-/prototipo1/dist
-/prototipo1/tmp
-/prototipo1/out-tsc
-/prototipo1/bazel-out
+/frontend/pruebas_marzipano/dist
+/frontend/pruebas_marzipano/tmp
+/frontend/pruebas_marzipano/out-tsc
+/frontend/pruebas_marzipano/bazel-out
 
 # Node
-/prototipo1/node_modules
-/prototipo1/npm-debug.log
-/prototipo1/yarn-error.log
+/frontend/pruebas_marzipano/node_modules
+/frontend/pruebas_marzipano/npm-debug.log
+/frontend/pruebas_marzipano/yarn-error.log
 
 # Angular
-/prototipo1/.angular
+/frontend/pruebas_marzipano/.angular
 
 # IDEs and editors
-/prototipo1/.idea/
-/prototipo1/.project
-/prototipo1/.classpath
-/prototipo1/.c9/
+/frontend/pruebas_marzipano/.idea/
+/frontend/pruebas_marzipano/.project
+/frontend/pruebas_marzipano/.classpath
+/frontend/pruebas_marzipano/.c9/
 *.launch
-/prototipo1/.settings/
-/prototipo1/*.sublime-workspace
+/frontend/pruebas_marzipano/.settings/
+/frontend/pruebas_marzipano/*.sublime-workspace
 
 # Visual Studio Code
-/prototipo1/.vscode
-!/prototipo1/.vscode/settings.json
-!/prototipo1/.vscode/tasks.json
-!/prototipo1/.vscode/launch.json
-!/prototipo1/.vscode/extensions.json
-/prototipo1/.history/*
+/frontend/pruebas_marzipano/.vscode
+!/frontend/pruebas_marzipano/.vscode/settings.json
+!/frontend/pruebas_marzipano/.vscode/tasks.json
+!/frontend/pruebas_marzipano/.vscode/launch.json
+!/frontend/pruebas_marzipano/.vscode/extensions.json
+/frontend/pruebas_marzipano/.history/*
