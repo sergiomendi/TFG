@@ -6,6 +6,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { Ripple } from 'primeng/ripple';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'menu-bar',
@@ -16,6 +17,7 @@ import { Ripple } from 'primeng/ripple';
     InputTextModule,
     Ripple,
     CommonModule,
+    RouterLink,
   ],
   standalone: true,
   templateUrl: './menu-bar.component.html',
