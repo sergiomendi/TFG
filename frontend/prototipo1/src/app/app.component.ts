@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { PrimeNG } from 'primeng/config';
-import 'primeicons/primeicons.css';
 
 @Component({
   selector: 'app-root',
