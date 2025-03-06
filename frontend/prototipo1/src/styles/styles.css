@@ -3,7 +3,6 @@
 
 @layer tailwind {
   @import "tailwindcss";
-  @import "primeicons/primeicons.css";
   @import "primeflex/primeflex.css";
 }
 

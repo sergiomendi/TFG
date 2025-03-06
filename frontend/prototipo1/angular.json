@@ -27,14 +27,9 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/primeicons/fonts",
-                "output": "/assets/fonts"
               }
             ],
-            "styles": ["src/styles.css"],
+            "styles": ["src/styles/styles.css"],
             "scripts": []
           },
           "configurations": {
