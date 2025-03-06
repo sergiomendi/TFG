@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
+import { PrimeNG } from 'primeng/config';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,10 @@ import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 })
 export class AppComponent {
   title = 'prototipo1';
+
+  constructor(private primeng: PrimeNG) {}
+
+  ngOnInit() {
+    this.primeng.ripple.set(true);
+  }
 }

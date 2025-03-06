@@ -1,1 +1,92 @@
-escenas
+<p-dialog
+  header="Selecciona paciente"
+  [resizable]="true"
+  [modal]="true"
+  [draggable]="false"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <div class="flex items-center gap-4 mb-8">
+    <p-select
+      [options]="pacientes"
+      [(ngModel)]="pacienteSeleccionado"
+      optionLabel="nombre"
+      placeholder="Selecciona un paciente"
+      class="w-full md:w-56"
+    />
+  </div>
+  <div class="flex justify-end gap-2">
+    <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+    <p-button label="Save" (click)="visible = false" />
+  </div>
+</p-dialog>
+
+<div class="flex items-center justify-center h-full">
+  <p-table
+    #dt
+    [value]="escenas"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [globalFilterFields]="['titulo']"
+  >
+    <ng-template #caption>
+      <div class="flex justify-between w-full">
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Buscar"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+          />
+        </p-iconfield>
+        <p-button
+          label="Nueva escena"
+          icon="pi pi-plus"
+          iconPos="left"
+        ></p-button>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th></th>
+        <th>Titulo</th>
+        <th>Fecha de alta</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr>
+        <td>
+          <p-button
+            icon="pi pi-play-circle"
+            (onClick)="this.showDialog()"
+            [rounded]="true"
+            [text]="true"
+            [size]="'large'"
+          />
+        </td>
+        <td>{{ product.titulo }}</td>
+        <td>{{ product.fechaAlta }}</td>
+        <td>
+          <p-button
+            severity="warn"
+            icon="pi pi-pen-to-square"
+            [rounded]="true"
+            [text]="true"
+          />
+        </td>
+        <td>
+          <p-button
+            severity="danger"
+            icon="pi pi-trash"
+            [rounded]="true"
+            [text]="true"
+          />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
