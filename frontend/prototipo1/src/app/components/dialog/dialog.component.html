@@ -1,0 +1,21 @@
+<p-dialog
+  [header]="header"
+  [modal]="true"
+  [draggable]="false"
+  [(visible)]="visible"
+  [style]="{ width: '25rem', minHeight: '400px' }"
+  (onHide)="handleHide()"
+>
+  <ng-container *ngIf="visible">
+    <ng-content></ng-content>
+  </ng-container>
+  <ng-template #footer>
+    <p-button
+      label="Cancelar"
+      [text]="true"
+      severity="secondary"
+      (click)="visible = false"
+    />
+    <p-button label="Guardar" severity="success" (click)="visible = false" />
+  </ng-template>
+</p-dialog>

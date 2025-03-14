@@ -13,10 +13,10 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { Dialog } from 'primeng/dialog';
-import { Select } from 'primeng/select';
 import { Paciente } from '../models/paciente';
 import { FormsModule } from '@angular/forms';
+import { MiDialogComponent } from '../components/dialog/dialog.component';
+import { MiSelectComponent } from '../components/select/select.component';
 
 @Component({
   selector: 'app-escenas',
@@ -30,8 +30,8 @@ import { FormsModule } from '@angular/forms';
     InputIconModule,
     ButtonModule,
     FontAwesomeModule,
-    Dialog,
-    Select,
+    MiDialogComponent,
+    MiSelectComponent,
   ],
   templateUrl: './escenas.component.html',
 })
@@ -42,9 +42,9 @@ export class EscenasComponent {
   faTrash = faTrash;
   faMagnifyingGlass = faMagnifyingGlass;
   visible: boolean = false;
-  pacientes: Paciente[] | undefined;
+  pacientes: any[] | undefined;
 
-  pacienteSeleccionado: Paciente | undefined;
+  pacienteSeleccionado: [] | undefined;
   constructor() {}
 
   ngOnInit() {
@@ -56,27 +56,21 @@ export class EscenasComponent {
       { titulo: 'Escena 5', fechaAlta: new Date() },
     ];
     this.pacientes = [
-      { nombre: 'New York', fechaAlta: new Date() },
-      { nombre: 'Rome', fechaAlta: new Date() },
-      { nombre: 'London', fechaAlta: new Date() },
-      { nombre: 'Istanbul', fechaAlta: new Date() },
-      { nombre: 'Paris', fechaAlta: new Date() },
-      { nombre: 'Rome', fechaAlta: new Date() },
-      { nombre: 'London', fechaAlta: new Date() },
-      { nombre: 'Istanbul', fechaAlta: new Date() },
-      { nombre: 'Paris', fechaAlta: new Date() },
-      { nombre: 'Istanbul', fechaAlta: new Date() },
-      { nombre: 'Paris', fechaAlta: new Date() },
-      { nombre: 'Rome', fechaAlta: new Date() },
-      { nombre: 'London', fechaAlta: new Date() },
-      { nombre: 'Istanbul', fechaAlta: new Date() },
-      { nombre: 'Paris', fechaAlta: new Date() },
+      'New York',
+      'Rome',
+      'London',
+      'Istanbul',
+      'Paris',
+      'Rome',
+      'London',
     ];
     // this.productService.getProductsMini().then((data) => {
     //   this.products = data;
     // });
   }
+
   showDialog() {
     this.visible = true;
+    this.visible = false;
   }
 }

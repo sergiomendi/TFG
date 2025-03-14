@@ -1,26 +1,6 @@
-<p-dialog
-  header="Selecciona paciente"
-  [resizable]="true"
-  [modal]="true"
-  [draggable]="false"
-  [(visible)]="visible"
-  [style]="{ width: '25rem' }"
->
-  <div class="flex items-center gap-4 mb-8">
-    <p-select
-      [options]="pacientes"
-      [(ngModel)]="pacienteSeleccionado"
-      optionLabel="nombre"
-      placeholder="Selecciona un paciente"
-      class="w-full md:w-56"
-    />
-  </div>
-  <div class="flex justify-end gap-2">
-    <p-button label="Cancel" severity="secondary" (click)="visible = false" />
-    <p-button label="Save" (click)="visible = false" />
-  </div>
-</p-dialog>
-
+<mi-dialog [visible]="visible" [header]="'Selecciona paciente'">
+  <mi-select [options]="this.pacientes || []" [expanded]="true"></mi-select>
+</mi-dialog>
 <div class="flex items-center justify-center h-full">
   <p-table
     #dt
@@ -41,11 +21,7 @@
             (input)="dt.filterGlobal($any($event.target).value, 'contains')"
           />
         </p-iconfield>
-        <p-button
-          label="Nueva escena"
-          icon="pi pi-plus"
-          iconPos="left"
-        ></p-button>
+        <p-button label="Nueva escena" iconPos="left"></p-button>
       </div>
     </ng-template>
     <ng-template #header>
@@ -60,31 +36,21 @@
     <ng-template #body let-product>
       <tr>
         <td>
-          <p-button
-            icon="pi pi-play-circle"
-            (onClick)="this.showDialog()"
-            [rounded]="true"
-            [text]="true"
-            [size]="'large'"
-          />
+          <button pButton [rounded]="true" [text]="true" (click)="showDialog()">
+            <fa-icon [icon]="faCirclePlay"></fa-icon>
+          </button>
         </td>
         <td>{{ product.titulo }}</td>
         <td>{{ product.fechaAlta }}</td>
         <td>
-          <p-button
-            severity="warn"
-            icon="pi pi-pen-to-square"
-            [rounded]="true"
-            [text]="true"
-          />
+          <button pButton [rounded]="true" [text]="true" severity="warn">
+            <fa-icon [icon]="faPenToSquare"></fa-icon>
+          </button>
         </td>
         <td>
-          <p-button
-            severity="danger"
-            icon="pi pi-trash"
-            [rounded]="true"
-            [text]="true"
-          />
+          <button pButton [rounded]="true" [text]="true" severity="danger">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
         </td>
       </tr>
     </ng-template>
