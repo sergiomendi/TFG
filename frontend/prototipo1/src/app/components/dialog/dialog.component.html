@@ -3,7 +3,7 @@
   [modal]="true"
   [draggable]="false"
   [(visible)]="visible"
-  [style]="{ width: '25rem', minHeight: '400px' }"
+  [style]="styleClass ? styleClass : { width: '25rem', minHeight: '400px' }"
   (onHide)="handleHide()"
 >
   <ng-container *ngIf="visible">

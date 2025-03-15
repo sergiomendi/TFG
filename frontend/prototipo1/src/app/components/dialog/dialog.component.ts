@@ -22,9 +22,11 @@ import { ButtonModule } from 'primeng/button';
 export class MiDialogComponent {
   @Input() header: string = '';
   @Input() visible: boolean = false;
+  @Input() styleClass: Dialog['style'] = '';
+
+  constructor() {}
 
   handleHide() {
-    console.log('hide');
     this.visible = false;
   }
 }

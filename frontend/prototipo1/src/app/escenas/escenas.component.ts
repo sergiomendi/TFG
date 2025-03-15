@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Escena } from '../models/escena';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -8,15 +8,17 @@ import {
   faMagnifyingGlass,
   faPenToSquare,
   faTrash,
+  faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { Paciente } from '../models/paciente';
 import { FormsModule } from '@angular/forms';
 import { MiDialogComponent } from '../components/dialog/dialog.component';
 import { MiSelectComponent } from '../components/select/select.component';
+import { Dialog } from 'primeng/dialog';
+import { ModalCrearEscenaComponent } from './modal-crear-escena/modal-crear-escena.component';
 
 @Component({
   selector: 'app-escenas',
@@ -32,16 +34,21 @@ import { MiSelectComponent } from '../components/select/select.component';
     FontAwesomeModule,
     MiDialogComponent,
     MiSelectComponent,
+    ModalCrearEscenaComponent,
   ],
   templateUrl: './escenas.component.html',
 })
 export class EscenasComponent {
+  @ViewChild('dialogIniciar') dialogIniciar: Dialog | undefined;
+  @ViewChild('dialogCrear') dialogCrear: Dialog | undefined;
   escenas!: Escena[];
   faCirclePlay = faCirclePlay;
   faPenToSquare = faPenToSquare;
   faTrash = faTrash;
+  faPlus = faPlus;
   faMagnifyingGlass = faMagnifyingGlass;
-  visible: boolean = false;
+  ModalIniciarExpVisible: boolean = false;
+  ModalCrearExpVisible: boolean = false;
   pacientes: any[] | undefined;
 
   pacienteSeleccionado: [] | undefined;
@@ -64,13 +71,16 @@ export class EscenasComponent {
       'Rome',
       'London',
     ];
-    // this.productService.getProductsMini().then((data) => {
-    //   this.products = data;
-    // });
   }
 
-  showDialog() {
-    this.visible = true;
-    this.visible = false;
+  showDialogCrearExp() {
+    if (this.dialogCrear) {
+      this.dialogCrear.visible = true;
+    }
+  }
+  showDialogIniciarExp() {
+    if (this.dialogIniciar) {
+      this.dialogIniciar.visible = true;
+    }
   }
 }

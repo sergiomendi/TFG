@@ -1,5 +1,13 @@
-<mi-dialog [visible]="visible" [header]="'Selecciona paciente'">
+<mi-dialog #dialogIniciar [header]="'Selecciona paciente'">
   <mi-select [options]="this.pacientes || []" [expanded]="true"></mi-select>
+</mi-dialog>
+<mi-dialog
+  #dialogCrear
+  [visible]="ModalCrearExpVisible"
+  [header]="'Crear escena'"
+  [styleClass]="{ width: '80%', minHeight: '80%' }"
+>
+  <modal-crear-escena-content></modal-crear-escena-content>
 </mi-dialog>
 <div class="flex items-center justify-center h-full">
   <p-table
@@ -21,7 +29,9 @@
             (input)="dt.filterGlobal($any($event.target).value, 'contains')"
           />
         </p-iconfield>
-        <p-button label="Nueva escena" iconPos="left"></p-button>
+        <button pButton label="Crear escena" (click)="showDialogCrearExp()">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
       </div>
     </ng-template>
     <ng-template #header>
@@ -36,7 +46,12 @@
     <ng-template #body let-product>
       <tr>
         <td>
-          <button pButton [rounded]="true" [text]="true" (click)="showDialog()">
+          <button
+            pButton
+            [rounded]="true"
+            [text]="true"
+            (click)="showDialogIniciarExp()"
+          >
             <fa-icon [icon]="faCirclePlay"></fa-icon>
           </button>
         </td>
