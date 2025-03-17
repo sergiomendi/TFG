@@ -35,6 +35,7 @@
             ],
             "styles": [
               "src/styles/styles.css",
+              "src/styles/primeng_override.css",
               "node_modules/primeicons/primeicons.css"
             ],
             "scripts": []

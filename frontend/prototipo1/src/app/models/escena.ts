@@ -1,8 +1,8 @@
 export class Escena {
-  fechaAlta: Date;
+  fechaAlta: string;
   titulo: string;
 
-  constructor(fechaAlta: Date, titulo: string) {
+  constructor(fechaAlta: string, titulo: string) {
     this.fechaAlta = fechaAlta;
     this.titulo = titulo;
   }

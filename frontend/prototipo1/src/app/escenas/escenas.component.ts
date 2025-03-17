@@ -14,6 +14,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
 import { FormsModule } from '@angular/forms';
 import { MiDialogComponent } from '../components/dialog/dialog.component';
 import { MiSelectComponent } from '../components/select/select.component';
@@ -30,6 +31,7 @@ import { ModalCrearEscenaComponent } from './modal-crear-escena/modal-crear-esce
     InputTextModule,
     IconFieldModule,
     InputIconModule,
+    MessageModule,
     ButtonModule,
     FontAwesomeModule,
     MiDialogComponent,
@@ -41,6 +43,7 @@ import { ModalCrearEscenaComponent } from './modal-crear-escena/modal-crear-esce
 export class EscenasComponent {
   @ViewChild('dialogIniciar') dialogIniciar: Dialog | undefined;
   @ViewChild('dialogCrear') dialogCrear: Dialog | undefined;
+  @ViewChild('dialogEliminar') dialogEliminar: Dialog | undefined;
   escenas!: Escena[];
   faCirclePlay = faCirclePlay;
   faPenToSquare = faPenToSquare;
@@ -49,6 +52,7 @@ export class EscenasComponent {
   faMagnifyingGlass = faMagnifyingGlass;
   ModalIniciarExpVisible: boolean = false;
   ModalCrearExpVisible: boolean = false;
+  ModalEliminarVisible: boolean = false;
   pacientes: any[] | undefined;
 
   pacienteSeleccionado: [] | undefined;
@@ -56,20 +60,20 @@ export class EscenasComponent {
 
   ngOnInit() {
     this.escenas = [
-      { titulo: 'Escena 1', fechaAlta: new Date() },
-      { titulo: 'Escena 2', fechaAlta: new Date() },
-      { titulo: 'Escena 3', fechaAlta: new Date() },
-      { titulo: 'Escena 4', fechaAlta: new Date() },
-      { titulo: 'Escena 5', fechaAlta: new Date() },
+      { titulo: 'Escena 1', fechaAlta: new Date().toLocaleDateString() },
+      { titulo: 'Escena 2', fechaAlta: new Date().toLocaleDateString() },
+      { titulo: 'Escena 3', fechaAlta: new Date().toLocaleDateString() },
+      { titulo: 'Escena 4', fechaAlta: new Date().toLocaleDateString() },
+      { titulo: 'Escena 5', fechaAlta: new Date().toLocaleDateString() },
     ];
     this.pacientes = [
-      'New York',
-      'Rome',
-      'London',
-      'Istanbul',
-      'Paris',
-      'Rome',
-      'London',
+      'John Doe',
+      'Jane Smith',
+      'Michael Johnson',
+      'Emily Davis',
+      'William Brown',
+      'Sophia Wilson',
+      'James Taylor',
     ];
   }
 
@@ -81,6 +85,11 @@ export class EscenasComponent {
   showDialogIniciarExp() {
     if (this.dialogIniciar) {
       this.dialogIniciar.visible = true;
+    }
+  }
+  showDialogEliminarExp() {
+    if (this.dialogEliminar) {
+      this.dialogEliminar.visible = true;
     }
   }
 }

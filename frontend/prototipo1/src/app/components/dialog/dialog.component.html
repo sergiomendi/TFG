@@ -6,9 +6,7 @@
   [style]="styleClass ? styleClass : { width: '25rem', minHeight: '400px' }"
   (onHide)="handleHide()"
 >
-  <ng-container *ngIf="visible">
-    <ng-content></ng-content>
-  </ng-container>
+  <ng-content></ng-content>
   <ng-template #footer>
     <p-button
       label="Cancelar"

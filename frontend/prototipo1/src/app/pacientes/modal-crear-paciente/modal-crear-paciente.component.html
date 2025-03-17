@@ -1,0 +1,70 @@
+<div class="flex flex-col gap-6">
+  <div class="flex gap-6">
+    <input pInputText type="text" placeholder="Nombre" class="w-full" />
+
+    <input
+      pInputText
+      type="text"
+      [defaultValue]="'12/06/25'"
+      placeholder="Fecha"
+      class="w-1/4"
+      disabled
+    />
+  </div>
+  <textarea
+    rows="5"
+    cols="30"
+    placeholder="Comentarios"
+    pTextarea
+    class="w-full max-h-35"
+  ></textarea>
+
+  <p-table
+    #dt
+    [value]="experiencias"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [globalFilterFields]="['titulo']"
+  >
+    <ng-template #caption>
+      <div class="flex justify-between w-full">
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Buscar"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th>Titulo</th>
+        <th>Fecha de alta</th>
+        <th>Tiempo total (min)</th>
+        <th>Ansiedad Inicio</th>
+        <th>Ansiedad Final</th>
+        <th>Ansiedad Media</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-registro>
+      <tr>
+        <td>{{ registro.titulo }}</td>
+        <td>{{ registro.fecha }}</td>
+        <td>{{ registro.tiempoTotal }}</td>
+        <td>
+          <fa-icon [icon]="faFaceSmile"></fa-icon>
+        </td>
+        <td>
+          <fa-icon [icon]="faFaceSmile"></fa-icon>
+        </td>
+        <td>
+          <fa-icon [icon]="faFaceSmile"></fa-icon>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

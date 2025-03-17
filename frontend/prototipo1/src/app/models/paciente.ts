@@ -1,8 +1,8 @@
 export class Paciente {
-  fechaAlta: Date;
+  fechaAlta: string;
   nombre: string;
 
-  constructor(fechaAlta: Date, titulo: string) {
+  constructor(fechaAlta: string, titulo: string) {
     this.fechaAlta = fechaAlta;
     this.nombre = titulo;
   }

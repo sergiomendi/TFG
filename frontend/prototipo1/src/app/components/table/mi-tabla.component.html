@@ -1,0 +1,35 @@
+<div class="flex items-center justify-center h-full">
+  <p-table
+    #dt
+    [value]="data"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [globalFilterFields]="[filterBy]"
+  >
+    <ng-template #caption>
+      <p-iconfield iconPosition="left" *ngIf="filterBy">
+        <p-inputicon>
+          <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+        </p-inputicon>
+        <input
+          pInputText
+          type="text"
+          placeholder="Buscar"
+          (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+        /> </p-iconfield
+    ></ng-template>
+    <ng-template #header>
+      <tr>
+        <th *ngFor="let col of columns" [style.width]="col.width || 'auto'">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr>
+        <td *ngFor="let col of columns">
+          {{ product[col.field] }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
