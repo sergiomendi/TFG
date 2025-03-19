@@ -1,0 +1,93 @@
+<p-fileupload
+  name="myfile[]"
+  [multiple]="true"
+  accept="image/*"
+  maxFileSize="1000000"
+  (onUpload)="onTemplatedUpload()"
+  (onSelect)="onSelectedFiles($event)"
+>
+  <ng-template
+    #header
+    let-files
+    let-chooseCallback="chooseCallback"
+    let-clearCallback="clearCallback"
+    let-uploadCallback="uploadCallback"
+  >
+    <div class="flex gap-2">
+      <p-button
+        (onClick)="choose($event, chooseCallback)"
+        icon="pi pi-images"
+        [rounded]="true"
+        [outlined]="true"
+      />
+
+      <p-button
+        (onClick)="clearCallback()"
+        icon="pi pi-times"
+        [rounded]="true"
+        [outlined]="true"
+        severity="danger"
+        [disabled]="!files || files.length === 0"
+      />
+    </div>
+  </ng-template>
+  <ng-template
+    #content
+    let-files
+    let-uploadedFiles="uploadedFiles"
+    let-removeFileCallback="removeFileCallback"
+    let-removeUploadedFileCallback="removeUploadedFileCallback"
+  >
+    <div class="flex flex-col gap-8 pt-2">
+      <div *ngIf="files?.length > 0">
+        <div class="flex flex-wrap gap-4">
+          <div
+            *ngFor="let file of files; let i = index"
+            class="px-6 py-4 rounded-border flex flex-col border border-surface items-center gap-4 justify-between"
+          >
+            <div class="flex items-center h-full">
+              <img
+                role="presentation"
+                [alt]="file.name"
+                [src]="file.objectURL"
+                width="100"
+                height="50"
+                class="rounded-sm"
+              />
+            </div>
+            <div class="flex flex-col gap-4 items-center">
+              <Input
+                pInputText
+                type="text"
+                placeholder="Titulo"
+                [defaultValue]="file.name"
+                class="font-semibold text-ellipsis max-w-40 whitespace-nowrap overflow-hidden"
+              />
+
+              <!-- <div>{{ formatSize(file.size) }}</div> -->
+              <button pButton label="Editar" severity="warn"></button>
+              <p-button
+                icon="pi pi-times"
+                (click)="
+                  onRemoveTemplatingFile($event, file, removeFileCallback, i)
+                "
+                [outlined]="true"
+                [rounded]="true"
+                severity="danger"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #file></ng-template>
+  <ng-template #empty>
+    <div class="flex items-center justify-center flex-col">
+      <i
+        class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"
+      ></i>
+      <p class="mt-6 mb-0">Drag and drop files to here to upload.</p>
+    </div>
+  </ng-template>
+</p-fileupload>

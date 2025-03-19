@@ -24,6 +24,7 @@ import {
   MiTablaComponent,
   TableColumn,
 } from '../components/table/mi-tabla.component';
+import { FileUploadComponent } from '../components/fileUpload/mi-file-upload.component';
 
 @Component({
   selector: 'app-escenas',
