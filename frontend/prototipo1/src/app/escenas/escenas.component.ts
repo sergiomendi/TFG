@@ -20,6 +20,10 @@ import { MiDialogComponent } from '../components/dialog/dialog.component';
 import { MiSelectComponent } from '../components/select/select.component';
 import { Dialog } from 'primeng/dialog';
 import { ModalCrearEscenaComponent } from './modal-crear-escena/modal-crear-escena.component';
+import {
+  MiTablaComponent,
+  TableColumn,
+} from '../components/table/mi-tabla.component';
 
 @Component({
   selector: 'app-escenas',
@@ -37,6 +41,7 @@ import { ModalCrearEscenaComponent } from './modal-crear-escena/modal-crear-esce
     MiDialogComponent,
     MiSelectComponent,
     ModalCrearEscenaComponent,
+    MiTablaComponent,
   ],
   templateUrl: './escenas.component.html',
 })
@@ -45,6 +50,7 @@ export class EscenasComponent {
   @ViewChild('dialogCrear') dialogCrear: Dialog | undefined;
   @ViewChild('dialogEliminar') dialogEliminar: Dialog | undefined;
   escenas!: Escena[];
+  columns: TableColumn[] = [];
   faCirclePlay = faCirclePlay;
   faPenToSquare = faPenToSquare;
   faTrash = faTrash;
@@ -74,6 +80,13 @@ export class EscenasComponent {
       'William Brown',
       'Sophia Wilson',
       'James Taylor',
+    ];
+    this.columns = [
+      { field: 'accion1', header: '', width: '5%' },
+      { field: 'titulo', header: 'Titulo' },
+      { field: 'fechaAlta', header: 'Fecha de alta' },
+      { field: 'accion2', header: '', width: '5%' },
+      { field: 'accion3', header: '', width: '5%' },
     ];
   }
 
