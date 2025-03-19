@@ -19,90 +19,35 @@
     text="¿Está seguro de que desea eliminar?"
   />
 </mi-dialog>
+
 <div class="flex items-center justify-center h-full">
-  <mi-tabla
-    [columns]="columns"
-    [data]="pacientes"
-    [filterBy]="'nombre'"
-  ></mi-tabla>
-
-  <!-- <p-table
-    #dt
-    [value]="pacientes"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [globalFilterFields]="['nombre']"
-  >
-    <ng-template #caption>
-      <div class="flex justify-between w-full">
-        <p-iconfield iconPosition="left">
-          <p-inputicon>
-            <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
-          </p-inputicon>
-          <input
-            pInputText
-            type="text"
-            placeholder="Buscar"
-            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-          />
-        </p-iconfield>
-        <button pButton label="Nuevo paciente" (click)="showDialogCrearExp()">
-          <fa-icon [icon]="faPlus"></fa-icon>
-        </button>
-      </div>
+  <mi-tabla [columns]="columns" [data]="pacientes" [filterBy]="'nombre'">
+    <ng-template #captionTemplate>
+      <button pButton label="Nuevo paciente" (click)="showDialogCrearExp()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+      </button>
     </ng-template>
-    <ng-template #header>
-      <tr>
-        <th>Nombre</th>
-        <th>Fecha de alta</th>
-        <th style="width: 5%"></th>
-        <th style="width: 5%"></th>
-      </tr>
+    <ng-template #accion1Template let-product>
+      <button
+        pButton
+        [rounded]="true"
+        [text]="true"
+        severity="warn"
+        (click)="showDialogCrearExp()"
+      >
+        <fa-icon [icon]="faPenToSquare"></fa-icon>
+      </button>
     </ng-template>
-    <ng-template #body let-product>
-      <tr>
-        <td>{{ product.nombre }}</td>
-        <td>{{ product.fechaAlta }}</td>
-        <td>
-          <button pButton [rounded]="true" [text]="true" severity="warn">
-            <fa-icon [icon]="faPenToSquare"></fa-icon>
-          </button>
-        </td>
-        <td>
-          <button
-            pButton
-            [rounded]="true"
-            [text]="true"
-            severity="danger"
-            (click)="showDialogEliminarExp()"
-          >
-            <fa-icon [icon]="faTrash"></fa-icon>
-          </button>
-        </td>
-      </tr>
+    <ng-template #accion2Template let-product>
+      <button
+        pButton
+        [rounded]="true"
+        [text]="true"
+        severity="danger"
+        (click)="showDialogEliminarExp()"
+      >
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
     </ng-template>
-  </p-table> -->
+  </mi-tabla>
 </div>
-
-<ng-template #rightCaption>
-  <button pButton label="Nuevo paciente" (click)="showDialogCrearExp()">
-    <fa-icon [icon]="faPlus"></fa-icon>
-  </button>
-</ng-template>
-
-<ng-template #editCol>
-  <button pButton [rounded]="true" [text]="true" severity="warn">
-    <fa-icon [icon]="faPenToSquare"></fa-icon>
-  </button>
-</ng-template>
-
-<ng-template #deleteCol>
-  <button
-    pButton
-    [rounded]="true"
-    [text]="true"
-    severity="danger"
-    (click)="showDialogEliminarExp()"
-  >
-    <fa-icon [icon]="faTrash"></fa-icon>
-  </button>
-</ng-template>

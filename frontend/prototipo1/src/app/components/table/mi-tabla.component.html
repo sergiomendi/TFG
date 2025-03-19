@@ -6,17 +6,21 @@
     [globalFilterFields]="[filterBy]"
   >
     <ng-template #caption>
-      <p-iconfield iconPosition="left" *ngIf="filterBy">
-        <p-inputicon>
-          <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
-        </p-inputicon>
-        <input
-          pInputText
-          type="text"
-          placeholder="Buscar"
-          (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-        /> </p-iconfield
-    ></ng-template>
+      <div class="flex justify-between w-full">
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Buscar"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+          />
+        </p-iconfield>
+        <ng-container *ngTemplateOutlet="captionTemplate"></ng-container>
+      </div>
+    </ng-template>
     <ng-template #header>
       <tr>
         <th *ngFor="let col of columns" [style.width]="col.width || 'auto'">
@@ -27,7 +31,27 @@
     <ng-template #body let-product>
       <tr>
         <td *ngFor="let col of columns">
-          {{ product[col.field] }}
+          <ng-container *ngIf="col.field === 'accion1'">
+            <ng-container
+              *ngTemplateOutlet="
+                accion1Template;
+                context: { $implicit: product }
+              "
+            ></ng-container>
+          </ng-container>
+          <ng-container *ngIf="col.field === 'accion2'">
+            <ng-container
+              *ngTemplateOutlet="
+                accion2Template;
+                context: { $implicit: product }
+              "
+            ></ng-container>
+          </ng-container>
+          <ng-container
+            *ngIf="col.field !== 'accion1' && col.field !== 'accion2'"
+          >
+            {{ product[col.field] }}
+          </ng-container>
         </td>
       </tr>
     </ng-template>

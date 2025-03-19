@@ -47,8 +47,6 @@ import {
 export class PacientesComponent {
   @ViewChild('dialogCrear') dialogCrear: Dialog | undefined;
   @ViewChild('dialogEliminar') dialogEliminar: Dialog | undefined;
-  @ViewChild('editCol') editCol: TemplateRef<any> | undefined;
-  @ViewChild('deleteCol') deleteCol: TemplateRef<any> | undefined;
   pacientes!: Paciente[];
   columns: TableColumn[] = [];
   faMagnifyingGlass = faMagnifyingGlass;
@@ -81,11 +79,12 @@ export class PacientesComponent {
         fechaAlta: new Date('2023-05-05').toLocaleDateString(),
       },
     ];
+
     this.columns = [
       { field: 'nombre', header: 'Nombre' },
       { field: 'fechaAlta', header: 'Fecha de alta' },
       { field: 'accion1', header: '', width: '5%' },
-      { field: this.deleteCol, header: '', width: '5%' },
+      { field: 'accion2', header: '', width: '5%' },
     ];
   }
 
