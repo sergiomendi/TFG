@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { Escena } from '../models/escena';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -24,7 +25,6 @@ import {
   MiTablaComponent,
   TableColumn,
 } from '../components/table/mi-tabla.component';
-import { FileUploadComponent } from '../components/fileUpload/mi-file-upload.component';
 
 @Component({
   selector: 'app-escenas',
@@ -62,8 +62,7 @@ export class EscenasComponent {
   ModalEliminarVisible: boolean = false;
   pacientes: any[] | undefined;
 
-  pacienteSeleccionado: [] | undefined;
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.escenas = [
@@ -89,6 +88,11 @@ export class EscenasComponent {
       { field: 'accion2', header: '', width: '5%' },
       { field: 'accion3', header: '', width: '5%' },
     ];
+  }
+
+  redirectToPlay() {
+    console.log('Redirecting to play');
+    this.router.navigate(['/play']);
   }
 
   showDialogCrearExp() {

@@ -1,4 +1,8 @@
-<mi-dialog #dialogIniciar [header]="'Selecciona paciente'">
+<mi-dialog
+  #dialogIniciar
+  [header]="'Selecciona paciente'"
+  (save)="redirectToPlay()"
+>
   <mi-select [options]="this.pacientes || []" [expanded]="true"></mi-select>
 </mi-dialog>
 <mi-dialog

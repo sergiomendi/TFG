@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
@@ -39,6 +39,8 @@ import {
   ],
 })
 export class ModalCrearPacienteComponent {
+  @Input() isModalEditar: boolean = false;
+
   faMagnifyingGlass = faMagnifyingGlass;
   faPenToSquare = faPenToSquare;
   faTrash = faTrash;

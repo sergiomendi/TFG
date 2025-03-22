@@ -55,6 +55,7 @@ export class PacientesComponent {
   faPlus = faPlus;
   ModalCrearVisible: boolean = false;
   ModalEliminarVisible: boolean = false;
+  isModalEditar: boolean = false;
 
   constructor() {
     this.pacientes = [

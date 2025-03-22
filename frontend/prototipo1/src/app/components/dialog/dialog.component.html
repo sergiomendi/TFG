@@ -14,6 +14,10 @@
       severity="secondary"
       (click)="visible = false"
     />
-    <p-button label="Guardar" severity="success" (click)="visible = false" />
+    <p-button
+      label="Guardar"
+      severity="success"
+      (click)="onSave(); visible = false"
+    />
   </ng-template>
 </p-dialog>

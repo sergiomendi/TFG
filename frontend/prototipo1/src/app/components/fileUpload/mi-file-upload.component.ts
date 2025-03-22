@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { BadgeModule } from 'primeng/badge';
 import { HttpClientModule } from '@angular/common/http'; // Importa HttpClientModule aquí
 import { InputText } from 'primeng/inputtext';
+import { Dialog } from 'primeng/dialog';
+import { MiDialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'mi-file-upload',
@@ -17,16 +19,34 @@ import { InputText } from 'primeng/inputtext';
     InputText,
     CommonModule,
     HttpClientModule,
+    MiDialogComponent,
   ],
 })
 export class FileUploadComponent {
   files = [];
+  retos: { id: number; value: string }[] = [{ id: 0, value: '' }]; // Lista para almacenar los valores de los campos de texto con índices
+  nextId: number = 1; // Variable para generar IDs únicos
 
   totalSize: number = 0;
 
   totalSizePercent: number = 0;
+  @ViewChild('dialogRetos') dialogRetos: Dialog | undefined;
 
   constructor() {}
+
+  showDialogRetos() {
+    if (this.dialogRetos) {
+      this.dialogRetos.visible = true;
+    }
+  }
+
+  addInput() {
+    this.retos.push({ id: this.nextId++, value: '' }); // Añadir un nuevo campo de texto con un ID único
+  }
+
+  removeInput(id: number) {
+    this.retos = this.retos.filter((reto) => reto.id !== id); // Eliminar un campo de texto por ID
+  }
 
   choose(event: any, callback: any) {
     callback();

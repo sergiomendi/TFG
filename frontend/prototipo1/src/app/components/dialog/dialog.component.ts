@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
 import { InputTextModule } from 'primeng/inputtext';
@@ -23,7 +23,11 @@ export class MiDialogComponent {
   @Input() header: string = '';
   @Input() visible: boolean = false;
   @Input() styleClass: Dialog['style'] = '';
+  @Output() save = new EventEmitter<void>();
 
+  onSave() {
+    this.save.emit();
+  }
   constructor() {}
 
   handleHide() {

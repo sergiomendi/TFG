@@ -1,3 +1,31 @@
+<mi-dialog #dialogRetos [header]="'Añadir retos'">
+  <div class="flex flex-col gap-4">
+    <div *ngFor="let reto of retos" class="flex items-center gap-2">
+      <input
+        pInputText
+        type="text"
+        placeholder="Escriba el reto"
+        class="w-full"
+      />
+      <button
+        pButton
+        icon="pi pi-times"
+        (click)="removeInput(reto.id)"
+        [outlined]="true"
+        [rounded]="true"
+        severity="danger"
+        style="width: 30px; height: 30px; padding: 0"
+      ></button>
+    </div>
+    <button
+      pButton
+      label="Añadir"
+      severity="success"
+      (click)="addInput()"
+    ></button>
+  </div>
+</mi-dialog>
+
 <p-fileupload
   name="myfile[]"
   [multiple]="true"
@@ -65,7 +93,13 @@
               />
 
               <!-- <div>{{ formatSize(file.size) }}</div> -->
-              <button pButton label="Editar" severity="warn"></button>
+
+              <button
+                pButton
+                label="Retos"
+                severity="success"
+                (click)="showDialogRetos()"
+              ></button>
               <p-button
                 icon="pi pi-times"
                 (click)="

@@ -24,6 +24,7 @@
     [value]="experiencias"
     [tableStyle]="{ 'min-width': '50rem' }"
     [globalFilterFields]="['titulo']"
+    *ngIf="this.isModalEditar"
   >
     <ng-template #caption>
       <div class="flex justify-between w-full">

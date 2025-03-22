@@ -2,9 +2,15 @@
   #dialogCrear
   [visible]="ModalCrearVisible"
   [header]="'Nuevo paciente'"
-  [styleClass]="{ width: '80%', minHeight: '80%' }"
+  [styleClass]="
+    this.isModalEditar
+      ? { width: '50%', minHeight: '80%' }
+      : { width: '30%', minHeight: '50%' }
+  "
 >
-  <modal-crear-paciente-content></modal-crear-paciente-content>
+  <modal-crear-paciente-content
+    [isModalEditar]="isModalEditar"
+  ></modal-crear-paciente-content>
 </mi-dialog>
 <mi-dialog
   #dialogEliminar
@@ -23,7 +29,11 @@
 <div class="flex items-center justify-center h-full">
   <mi-tabla [columns]="columns" [data]="pacientes" [filterBy]="'nombre'">
     <ng-template #captionTemplate>
-      <button pButton label="Nuevo paciente" (click)="showDialogCrearExp()">
+      <button
+        pButton
+        label="Nuevo paciente"
+        (click)="showDialogCrearExp(); this.isModalEditar = false"
+      >
         <fa-icon [icon]="faPlus"></fa-icon>
       </button>
     </ng-template>
@@ -33,7 +43,7 @@
         [rounded]="true"
         [text]="true"
         severity="warn"
-        (click)="showDialogCrearExp()"
+        (click)="showDialogCrearExp(); this.isModalEditar = true"
       >
         <fa-icon [icon]="faPenToSquare"></fa-icon>
       </button>
