@@ -55,11 +55,20 @@
               "
             ></ng-container>
           </ng-container>
+          <ng-container *ngIf="col.field === 'accion4'">
+            <ng-container
+              *ngTemplateOutlet="
+                accion4Template;
+                context: { $implicit: product }
+              "
+            ></ng-container>
+          </ng-container>
           <ng-container
             *ngIf="
               col.field !== 'accion1' &&
               col.field !== 'accion2' &&
-              col.field !== 'accion3'
+              col.field !== 'accion3' &&
+              col.field !== 'accion4'
             "
           >
             {{ product[col.field] }}

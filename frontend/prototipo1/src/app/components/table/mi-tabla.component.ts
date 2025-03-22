@@ -36,5 +36,6 @@ export class MiTablaComponent {
   @ContentChild('accion1Template') accion1Template!: TemplateRef<any> | null;
   @ContentChild('accion2Template') accion2Template!: TemplateRef<any> | null;
   @ContentChild('accion3Template') accion3Template!: TemplateRef<any> | null;
+  @ContentChild('accion4Template') accion4Template!: TemplateRef<any> | null;
   @ContentChild('captionTemplate') captionTemplate!: TemplateRef<any> | null;
 }

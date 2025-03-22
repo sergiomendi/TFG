@@ -1,7 +1,7 @@
 <mi-dialog
   #dialogCrear
   [visible]="ModalCrearVisible"
-  [header]="'Nuevo paciente'"
+  [header]="this.isModalEditar ? 'Editar paciente' : 'Crear paciente'"
   [styleClass]="
     this.isModalEditar
       ? { width: '50%', minHeight: '80%' }

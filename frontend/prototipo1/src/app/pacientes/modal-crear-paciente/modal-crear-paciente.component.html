@@ -1,3 +1,35 @@
+<mi-dialog
+  #dialogDetalleExperiencia
+  [visible]="ModalDetalleExperienciaVisible"
+  [header]="'Experiencia'"
+  [styleClass]="{ width: '80%', minHeight: '80%' }"
+>
+  <div class="flex flex-col gap-6">
+    <div class="flex gap-6">
+      <input pInputText type="text" placeholder="Nombre" class="w-xl" />
+
+      <input
+        pInputText
+        type="text"
+        [defaultValue]="'12/06/25 14:30:00 - 12/06/25 15:30:00'"
+        placeholder="Fecha"
+        class="w-full"
+        disabled
+      />
+    </div>
+    <textarea
+      rows="15"
+      cols="30"
+      placeholder="Registro"
+      pTextarea
+      [defaultValue]="
+        'Evento 1: 12/06/25 14:30:00 - 12/06/25 15:30:00\nEvento 2: 13/06/25 16:00:00 - 13/06/25 17:00:00\nEvento 3: 14/06/25 18:00:00 - 14/06/25 19:00:00\nEvento 4: 15/06/25 10:00:00 - 15/06/25 11:00:00\nEvento 5: 16/06/25 12:00:00 - 16/06/25 13:00:00\nEvento 6: 17/06/25 14:00:00 - 17/06/25 15:00:00'
+      "
+      class="w-full h-full"
+    ></textarea>
+  </div>
+</mi-dialog>
+
 <div class="flex flex-col gap-6">
   <div class="flex gap-6">
     <input pInputText type="text" placeholder="Nombre" class="w-full" />
@@ -18,54 +50,22 @@
     pTextarea
     class="w-full max-h-35"
   ></textarea>
-
-  <p-table
-    #dt
-    [value]="experiencias"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [globalFilterFields]="['titulo']"
-    *ngIf="this.isModalEditar"
-  >
-    <ng-template #caption>
-      <div class="flex justify-between w-full">
-        <p-iconfield iconPosition="left">
-          <p-inputicon>
-            <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
-          </p-inputicon>
-          <input
-            pInputText
-            type="text"
-            placeholder="Buscar"
-            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-          />
-        </p-iconfield>
-      </div>
+  <mi-tabla [columns]="columns" [data]="experiencias" [filterBy]="'titulo'">
+    <ng-template #accion1Template>
+      <fa-icon [icon]="faFaceSmile"></fa-icon>
     </ng-template>
-    <ng-template #header>
-      <tr>
-        <th>Titulo</th>
-        <th>Fecha de alta</th>
-        <th>Tiempo total (min)</th>
-        <th>Ansiedad Inicio</th>
-        <th>Ansiedad Final</th>
-        <th>Ansiedad Media</th>
-      </tr>
+    <ng-template #accion2Template>
+      <fa-icon [icon]="faFaceSmile"></fa-icon>
     </ng-template>
-    <ng-template #body let-registro>
-      <tr>
-        <td>{{ registro.titulo }}</td>
-        <td>{{ registro.fecha }}</td>
-        <td>{{ registro.tiempoTotal }}</td>
-        <td>
-          <fa-icon [icon]="faFaceSmile"></fa-icon>
-        </td>
-        <td>
-          <fa-icon [icon]="faFaceSmile"></fa-icon>
-        </td>
-        <td>
-          <fa-icon [icon]="faFaceSmile"></fa-icon>
-        </td>
-      </tr>
+    <ng-template #accion3Template>
+      <fa-icon [icon]="faFaceSmile"></fa-icon>
     </ng-template>
-  </p-table>
+    <ng-template #accion4Template>
+      <fa-icon
+        [icon]="faEye"
+        class="text-lime-500 cursor-pointer"
+        (click)="showDialogDetalleExp()"
+      ></fa-icon>
+    </ng-template>
+  </mi-tabla>
 </div>
