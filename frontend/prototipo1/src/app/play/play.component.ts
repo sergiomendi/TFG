@@ -1,17 +1,32 @@
 import { NgIf } from '@angular/common';
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import Marzipano from 'marzipano';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MiDialogComponent } from '../components/dialog/dialog.component';
 import { MessageModule } from 'primeng/message';
 import { Dialog } from 'primeng/dialog';
+import { ButtonBarComponent } from './button-bar/button-bar.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'play',
   standalone: true,
   templateUrl: './play.component.html',
-  imports: [CheckboxModule, NgIf, MiDialogComponent, MessageModule],
+  imports: [
+    CheckboxModule,
+    NgIf,
+    MiDialogComponent,
+    MessageModule,
+    ButtonBarComponent,
+    ProgressSpinnerModule,
+  ],
 })
 export class PlayComponent implements AfterViewInit {
   @ViewChild('pano', { static: true }) panoElement!: ElementRef;
@@ -22,16 +37,32 @@ export class PlayComponent implements AfterViewInit {
   private isAnimating = false; // Flag para controlar la animación
   public isFullscreen = false;
   ModalSalirVisible: boolean = false;
+  isLoading: boolean = true; // Variable para controlar el indicador de carga
 
-  constructor(private router: Router) {}
+  images: string[] = ['/assets/blinds.jpg', '/assets/brown_photostudio_04.jpg'];
+  currentImageIndex: number = 0;
+  viewer: any;
+  scene: any;
+
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
+
   ngAfterViewInit() {
+    this.loadScene();
+  }
+
+  loadScene() {
+    // Mostrar el indicador de carga
+    this.isLoading = true;
+
     // Initialize Marzipano
     const viewerElement = this.panoElement.nativeElement;
 
-    const viewer = new Marzipano.Viewer(viewerElement);
+    this.viewer = new Marzipano.Viewer(viewerElement);
 
     // Create a source
-    const source = Marzipano.ImageUrlSource.fromString('/assets/blinds.jpg');
+    const source = Marzipano.ImageUrlSource.fromString(
+      this.images[this.currentImageIndex]
+    );
 
     // Create a geometry
     const geometry = new Marzipano.EquirectGeometry([{ width: 4000 }]);
@@ -47,14 +78,12 @@ export class PlayComponent implements AfterViewInit {
       Marzipano.RectilinearView.limit.pitch(-Math.PI / 2, Math.PI / 2) // Limita el ángulo de inclinación
     );
 
-    // Create a view with the limiter
-    const view = new Marzipano.RectilinearView(null, limiter);
-
-    // Depuración: Verificar los valores del FOV inicial
-    console.log('Initial FOV:', view.fov());
+    // Create a view with the limiter and set the initial FOV
+    const initialFov = (minFov + maxFov) / 2; // Ajusta este valor según sea necesario
+    const view = new Marzipano.RectilinearView({ fov: initialFov }, limiter);
 
     // Create a scene
-    const scene = viewer.createScene({
+    this.scene = this.viewer.createScene({
       source: source,
       geometry: geometry,
       view: view,
@@ -67,47 +96,36 @@ export class PlayComponent implements AfterViewInit {
       targetFov: Math.PI / 2, // Fov value to converge to
     });
 
-    viewer.setIdleMovement(6000, autorotate);
+    this.viewer.setIdleMovement(6000, autorotate);
 
     // Display the scene
-    scene.switchTo();
+    this.scene.switchTo();
 
-    // Función para manejar el zoom
-    const handleZoom = (event: WheelEvent) => {
-      if (this.isAnimating) return; // Ignorar el evento si hay una animación en progreso
-
-      event.preventDefault();
-      const delta = event.deltaY;
-      const currentFov = view.fov();
-      const newFov = currentFov + delta * 0.01; // Ajusta la velocidad del zoom aquí
-      const clampedFov = Math.min(Math.max(newFov, minFov), maxFov); // Asegura que el FOV esté dentro de los límites
-
-      console.log('New FOV:', newFov, 'Clamped FOV:', clampedFov); // Depuración
-
-      // Marcar que la animación está en progreso
-      this.isAnimating = true;
-
-      // Animación suave del zoom
-      view.setParameters(
-        { fov: clampedFov }, // Nuevo FOV
-        200 // Duración de la animación en milisegundos
-      );
-
-      // Restablecer el flag después de la animación
-      setTimeout(() => {
-        this.isAnimating = false;
-      }, 200); // Duración de la animación
+    // Crear un objeto Image para cargar la imagen y detectar cuándo se ha cargado
+    const img = new Image();
+    img.src = this.images[this.currentImageIndex];
+    img.onload = () => {
+      // Ocultar el indicador de carga después de que la imagen se haya cargado
+      this.isLoading = false;
+      this.cdr.detectChanges(); // Detectar cambios manualmente para evitar el error ExpressionChangedAfterItHasBeenCheckedError
     };
-
-    // Enable mouse wheel zoom
-    viewerElement.addEventListener('wheel', (event: Event) => {
-      handleZoom(event as WheelEvent);
-    });
   }
 
   onChangeImage(direction: string) {
-    console.log(`Image change requested: ${direction}`);
-    // Implement the logic to change the image or perform other actions based on direction
+    if (
+      direction === 'next' &&
+      this.currentImageIndex < this.images.length - 1
+    ) {
+      this.currentImageIndex++;
+    } else if (direction === 'previous' && this.currentImageIndex > 0) {
+      this.currentImageIndex--;
+    } else {
+      // No cambiar la imagen si se alcanza el tope
+      return;
+    }
+
+    // Cargar la nueva escena
+    this.loadScene();
   }
 
   toogleFullScreen() {

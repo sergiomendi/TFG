@@ -26,7 +26,6 @@ export class MiSelectComponent {
   constructor() {}
 
   ngOnInit() {
-    console.log(this.options);
     this.options = this.options.map((option) => ({
       label: option,
       value: option,

@@ -91,7 +91,6 @@ export class EscenasComponent {
   }
 
   redirectToPlay() {
-    console.log('Redirecting to play');
     this.router.navigate(['/play']);
   }
 
