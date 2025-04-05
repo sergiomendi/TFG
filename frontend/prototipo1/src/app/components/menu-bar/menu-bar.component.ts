@@ -35,7 +35,6 @@ export class MenuBarComponent implements OnInit {
       {
         label: 'Escenas',
         icon: 'pi pi-search',
-        badge: '3',
         routerLink: '/escenas',
       },
     ];

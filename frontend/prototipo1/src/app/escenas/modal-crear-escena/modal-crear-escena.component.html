@@ -1,0 +1,22 @@
+<div class="flex flex-col gap-6">
+  <div class="flex gap-6">
+    <input
+      pInputText
+      type="text"
+      [defaultValue]="'12/06/25'"
+      placeholder="Fecha"
+      class="w-1/4"
+      disabled
+    />
+    <input pInputText type="text" placeholder="Titulo" class="w-full" />
+  </div>
+  <textarea
+    rows="5"
+    cols="30"
+    placeholder="Descripción"
+    pTextarea
+    class="w-full"
+  ></textarea>
+
+  <mi-file-upload></mi-file-upload>
+</div>
