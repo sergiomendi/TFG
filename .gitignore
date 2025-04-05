@@ -28,3 +28,7 @@
 !/frontend/pruebas_marzipano/.vscode/launch.json
 !/frontend/pruebas_marzipano/.vscode/extensions.json
 /frontend/pruebas_marzipano/.history/*
+
+/backend/node_modules
+/backend/.env
+/backend/package-lock.json
