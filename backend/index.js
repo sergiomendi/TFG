@@ -3,7 +3,6 @@ Importación de módulos
 */
 const express = require("express");
 const cors = require("cors");
-const fileUpload = require("express-fileupload");
 
 require("dotenv").config();
 const { dbConnection } = require("./database/configdb");
@@ -16,20 +15,10 @@ dbConnection();
 app.use(cors());
 app.use(express.json());
 
-app.use(
-  fileUpload({
-    limits: { fileSize: process.env.MAXSIZEUPLOAD * 1024 * 1024 },
-    createParentPath: true,
-  })
-);
-
-app.use("/api/login", require("./routes/auth"));
-app.use("/api/usuarios", require("./routes/usuarios"));
-app.use("/api/grupos", require("./routes/grupos"));
-app.use("/api/cursos", require("./routes/cursos"));
-app.use("/api/asignaturas", require("./routes/asignaturas"));
-app.use("/api/items", require("./routes/items"));
-app.use("/api/upload", require("./routes/uploads"));
+app.use("/api/paciente", require("./routes/paciente"));
+app.use("/api/experiencia", require("./routes/experiencia"));
+app.use("/api/escena", require("./routes/escena"));
+app.use("/api/evento", require("./routes/evento"));
 
 // Abrir la aplicacíon en el puerto 3000
 app.listen(process.env.PORT, () => {
