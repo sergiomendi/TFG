@@ -1,0 +1,93 @@
+<div #container>
+  <mi-dialog
+    #dialogSalir
+    [visible]="ModalSalirVisible"
+    [header]="'Abandonar de experiencia'"
+    [styleClass]="{ width: '20%', minHeight: '25%' }"
+    (save)="exit()"
+    ><p-message
+      severity="warn"
+      class="flex mt-0.5 h-full"
+      icon="pi pi-exclamation-triangle"
+      text="¿Está seguro de que desea abandonar la experiencia?"
+    />
+  </mi-dialog>
+  <p-progress-spinner
+    *ngIf="isLoading"
+    strokeWidth="8"
+    [style]="{
+      width: '50px',
+      height: '50px',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      zIndex: 1000,
+      borderRadius: '10px'
+    }"
+  />
+  <div id="pano" #pano style="width: 100%; height: 100vh"></div>
+  <div
+    style="position: absolute; top: 2%; left: 50%; transform: translateX(-50%)"
+  >
+    <app-button-bar (changeImage)="onChangeImage($event)"></app-button-bar>
+  </div>
+  <div
+    style="
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.705);
+      color: white;
+      padding: 10px;
+      font-size: 1.3em;
+    "
+  >
+    <ul>
+      <li class="flex items-center gap-2">
+        <p-checkbox class="flex" [binary]="true" />
+        <p>Localiza la manzana en la mesa</p>
+      </li>
+      <li class="flex items-center gap-2">
+        <p-checkbox class="flex" [binary]="true" /> Busca el plátano en el
+        frutero
+      </li>
+      <li class="flex items-center gap-2">
+        <p-checkbox class="flex" [binary]="true" /> Identifica la botella de
+        leche en la nevera
+      </li>
+      <li class="flex items-center gap-2">
+        <p-checkbox class="flex" [binary]="true" /> Descubre el pan en la
+        despensa
+      </li>
+      <li class="flex items-center gap-2">
+        <p-checkbox class="flex" [binary]="true" /> Observa las zanahorias en el
+        cajón de verduras
+      </li>
+    </ul>
+  </div>
+  <div style="position: absolute; top: 0; left: 0; color: white; padding: 10px">
+    <i
+      class="pi pi-sign-out"
+      style="font-size: 2.5rem; cursor: pointer"
+      (click)="showDialogSalir()"
+    ></i>
+  </div>
+  <div
+    style="position: absolute; top: 0; right: 0; color: white; padding: 10px"
+  >
+    <i
+      *ngIf="!isFullscreen"
+      class="pi pi-window-maximize"
+      style="font-size: 2.5rem; cursor: pointer"
+      (click)="toogleFullScreen()"
+    ></i>
+    <i
+      *ngIf="isFullscreen"
+      class="pi pi-window-minimize"
+      style="font-size: 2.5rem; cursor: pointer"
+      (click)="toogleFullScreen()"
+    ></i>
+  </div>
+  <div></div>
+</div>

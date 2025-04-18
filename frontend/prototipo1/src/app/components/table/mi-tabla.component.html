@@ -1,0 +1,80 @@
+<div class="flex items-center justify-center h-full">
+  <p-table
+    #dt
+    [value]="data"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [globalFilterFields]="[filterBy]"
+  >
+    <ng-template #caption>
+      <div class="flex justify-between w-full">
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Buscar"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+          />
+        </p-iconfield>
+        <ng-container *ngTemplateOutlet="captionTemplate"></ng-container>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th *ngFor="let col of columns" [style.width]="col.width || 'auto'">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr>
+        <td *ngFor="let col of columns">
+          <ng-container *ngIf="col.field === 'accion1'">
+            <ng-container
+              *ngTemplateOutlet="
+                accion1Template;
+                context: { $implicit: product }
+              "
+            ></ng-container>
+          </ng-container>
+          <ng-container *ngIf="col.field === 'accion2'">
+            <ng-container
+              *ngTemplateOutlet="
+                accion2Template;
+                context: { $implicit: product }
+              "
+            ></ng-container>
+          </ng-container>
+          <ng-container *ngIf="col.field === 'accion3'">
+            <ng-container
+              *ngTemplateOutlet="
+                accion3Template;
+                context: { $implicit: product }
+              "
+            ></ng-container>
+          </ng-container>
+          <ng-container *ngIf="col.field === 'accion4'">
+            <ng-container
+              *ngTemplateOutlet="
+                accion4Template;
+                context: { $implicit: product }
+              "
+            ></ng-container>
+          </ng-container>
+          <ng-container
+            *ngIf="
+              col.field !== 'accion1' &&
+              col.field !== 'accion2' &&
+              col.field !== 'accion3' &&
+              col.field !== 'accion4'
+            "
+          >
+            {{ product[col.field] }}
+          </ng-container>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,0 +1,14 @@
+@plugin 'tailwindcss-primeui';
+@layer tailwind, primeng;
+
+@layer tailwind {
+  @import "tailwindcss";
+  @use "primeicons/primeicons.css";
+  @import "primeflex/primeflex.css";
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}

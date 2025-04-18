@@ -1,0 +1,71 @@
+<mi-dialog
+  #dialogIniciar
+  [header]="'Selecciona paciente'"
+  (save)="redirectToPlay()"
+>
+  <mi-select [options]="this.pacientes || []" [expanded]="true"></mi-select>
+</mi-dialog>
+<mi-dialog
+  #dialogCrear
+  [visible]="ModalCrearExpVisible"
+  [header]="'Crear escena'"
+  [styleClass]="{ width: '80%', minHeight: '80%' }"
+>
+  <form>
+    <modal-crear-escena-content></modal-crear-escena-content>
+  </form>
+</mi-dialog>
+<mi-dialog
+  #dialogEliminar
+  [visible]="ModalEliminarVisible"
+  [header]="'Eliminar escena'"
+  [styleClass]="{ width: '20%', minHeight: '25%' }"
+>
+  <p-message
+    severity="warn"
+    class="flex mt-0.5 h-full"
+    icon="pi pi-exclamation-triangle"
+    text="¿Está seguro de que desea eliminar?"
+  />
+</mi-dialog>
+<div class="flex items-center justify-center h-full">
+  <mi-tabla [columns]="columns" [data]="escenas" [filterBy]="'titulo'">
+    <ng-template #captionTemplate>
+      <button pButton label="Crear escena" (click)="showDialogCrearExp()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+      </button>
+    </ng-template>
+    <ng-template #accion1Template let-product>
+      <button
+        pButton
+        [rounded]="true"
+        [text]="true"
+        (click)="showDialogIniciarExp()"
+      >
+        <fa-icon [icon]="faCirclePlay" class="text-xl"></fa-icon>
+      </button>
+    </ng-template>
+    <ng-template #accion2Template let-product>
+      <button
+        pButton
+        [rounded]="true"
+        [text]="true"
+        severity="warn"
+        (click)="showDialogCrearExp()"
+      >
+        <fa-icon [icon]="faPenToSquare"></fa-icon>
+      </button>
+    </ng-template>
+    <ng-template #accion3Template let-product>
+      <button
+        pButton
+        [rounded]="true"
+        [text]="true"
+        severity="danger"
+        (click)="showDialogEliminarExp()"
+      >
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+    </ng-template>
+  </mi-tabla>
+</div>

@@ -1,0 +1,88 @@
+<mi-dialog
+  #dialogDetalleExperiencia
+  [visible]="ModalDetalleExperienciaVisible"
+  [header]="'Experiencia'"
+  [styleClass]="{ width: '80%', minHeight: '80%' }"
+>
+  <div class="flex flex-col gap-6">
+    <div class="flex gap-6">
+      <input pInputText type="text" placeholder="Nombre" class="w-xl" />
+
+      <input
+        pInputText
+        type="text"
+        [defaultValue]="'12/06/25 14:30:00 - 12/06/25 15:30:00'"
+        placeholder="Fecha"
+        class="w-full"
+        disabled
+      />
+    </div>
+    <textarea
+      rows="15"
+      cols="30"
+      placeholder="Registro"
+      pTextarea
+      [defaultValue]="
+        'Evento 1: 12/06/25 14:30:00 - 12/06/25 15:30:00\nEvento 2: 13/06/25 16:00:00 - 13/06/25 17:00:00\nEvento 3: 14/06/25 18:00:00 - 14/06/25 19:00:00\nEvento 4: 15/06/25 10:00:00 - 15/06/25 11:00:00\nEvento 5: 16/06/25 12:00:00 - 16/06/25 13:00:00\nEvento 6: 17/06/25 14:00:00 - 17/06/25 15:00:00'
+      "
+      class="w-full h-full"
+    ></textarea>
+  </div>
+</mi-dialog>
+<div class="flex flex-col gap-4">
+  <form class="flex flex-col gap-4" [formGroup]="formGroup">
+    <div class="flex gap-6">
+      <!-- Campo Nombre -->
+      <input
+        pInputText
+        name="name"
+        type="text"
+        formControlName="nombre"
+        placeholder="Nombre"
+        class="w-full"
+      />
+
+      <!-- Campo Fecha -->
+      <input
+        pInputText
+        name="date"
+        type="text"
+        [value]="formGroup.get('fechaAlta')?.value | unixToShortDate"
+        placeholder="Fecha"
+        class="w-1/4"
+        disabled
+      />
+    </div>
+
+    <!-- Campo Comentarios -->
+    <textarea
+      rows="5"
+      cols="30"
+      name="comments"
+      placeholder="Comentarios"
+      formControlName="comentarios"
+      pTextarea
+      class="w-full max-h-35"
+    ></textarea>
+  </form>
+
+  <!-- Tabla de experiencias -->
+  <mi-tabla [columns]="columns" [data]="experiencias" [filterBy]="'titulo'">
+    <ng-template #accion1Template>
+      <fa-icon [icon]="faFaceSmile"></fa-icon>
+    </ng-template>
+    <ng-template #accion2Template>
+      <fa-icon [icon]="faFaceSmile"></fa-icon>
+    </ng-template>
+    <ng-template #accion3Template>
+      <fa-icon [icon]="faFaceSmile"></fa-icon>
+    </ng-template>
+    <ng-template #accion4Template>
+      <fa-icon
+        [icon]="faEye"
+        class="text-lime-500 cursor-pointer"
+        (click)="showDialogDetalleExp()"
+      ></fa-icon>
+    </ng-template>
+  </mi-tabla>
+</div>
