@@ -7,14 +7,18 @@
       ? { width: '70%', minHeight: '80%' }
       : { width: '60%', minHeight: '50%' }
   "
+  (save)="this.onCreateSubmit()"
 >
   <modal-crear-paciente-content
     [isModalEditar]="isModalEditar"
+    [formGroup]="crearPacienteForm"
+    [idPaciente]="idSelectedPaciente"
   ></modal-crear-paciente-content>
 </mi-dialog>
 <mi-dialog
   #dialogEliminar
   [visible]="ModalEliminarVisible"
+  [onSaveProp]="this.eliminarPaciente.bind(this)"
   [header]="'Eliminar escena'"
   [styleClass]="{ width: '20%', minHeight: '25%' }"
 >
@@ -43,7 +47,7 @@
         [rounded]="true"
         [text]="true"
         severity="warn"
-        (click)="showDialogCrearExp(); this.isModalEditar = true"
+        (click)="showDialogEditarExp(product.id); this.isModalEditar = true"
       >
         <fa-icon [icon]="faPenToSquare"></fa-icon>
       </button>
@@ -54,7 +58,7 @@
         [rounded]="true"
         [text]="true"
         severity="danger"
-        (click)="showDialogEliminarExp()"
+        (click)="showDialogEliminarExp(product.id)"
       >
         <fa-icon [icon]="faTrash"></fa-icon>
       </button>

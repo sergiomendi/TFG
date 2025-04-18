@@ -3,10 +3,13 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { PrimeNG } from 'primeng/config';
 import { NgIf } from '@angular/common';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MenuBarComponent, NgIf],
+  imports: [RouterOutlet, MenuBarComponent, NgIf, ToastModule],
+  providers: [MessageService],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

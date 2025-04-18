@@ -1,5 +1,34 @@
 const { response } = require("express");
 
+const obtenerPacientePorId = async (req, res = response) => {
+  const { id } = req.params;
+
+  try {
+    const [result] = await db.query("SELECT * FROM paciente WHERE id = ?", [
+      id,
+    ]);
+
+    if (result.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Paciente no encontrado",
+      });
+    }
+
+    const data = result[0];
+
+    res.json({
+      ok: true,
+      data,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error al obtener el paciente",
+    });
+  }
+};
 // Obtener pacientes con paginación
 const obtenerPacientes = async (req, res = response) => {
   const desde = Number(req.query.desde) || 0;
@@ -7,18 +36,17 @@ const obtenerPacientes = async (req, res = response) => {
   const id = req.query.id || null;
 
   try {
-    let pacientes, total;
+    let data, total;
 
     if (id) {
       // Obtener un paciente específico por ID
-      [pacientes] = await global.db.query(
-        "SELECT * FROM paciente WHERE id = ?",
-        [id]
-      );
+      [data] = await global.db.query("SELECT * FROM paciente WHERE id = ?", [
+        id,
+      ]);
       total = pacientes.length;
     } else {
       // Obtener todos los pacientes con paginación
-      [pacientes] = await global.db.query("SELECT * FROM paciente LIMIT ?, ?", [
+      [data] = await global.db.query("SELECT * FROM paciente LIMIT ?, ?", [
         desde,
         registropp,
       ]);
@@ -30,7 +58,7 @@ const obtenerPacientes = async (req, res = response) => {
     res.json({
       ok: true,
       msg: "obtenerPacientes",
-      pacientes,
+      data,
       page: {
         desde,
         registropp,
@@ -146,6 +174,7 @@ const borrarPaciente = async (req, res = response) => {
 };
 
 module.exports = {
+  obtenerPacientePorId,
   obtenerPacientes,
   crearPaciente,
   actualizarPaciente,

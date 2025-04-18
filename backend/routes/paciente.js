@@ -4,6 +4,7 @@ Ruta base: /api/pacientes
 
 const { Router } = require("express");
 const {
+  obtenerPacientePorId,
   obtenerPacientes,
   crearPaciente,
   actualizarPaciente,
@@ -14,6 +15,16 @@ const { validarCampos } = require("../middleware/validar-campos");
 const { validarJWT } = require("../middleware/validar-jwt");
 
 const router = Router();
+
+// Obtener un paciente por ID
+router.get(
+  "/:id",
+  [
+    check("id", "El id del paciente debe ser válido").isNumeric(),
+    validarCampos,
+  ],
+  obtenerPacientePorId
+);
 
 // Obtener pacientes
 router.get(

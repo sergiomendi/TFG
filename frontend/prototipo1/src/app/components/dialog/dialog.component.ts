@@ -23,9 +23,11 @@ export class MiDialogComponent {
   @Input() header: string = '';
   @Input() visible: boolean = false;
   @Input() styleClass: Dialog['style'] = '';
+  @Input() onSaveProp: () => void = () => {};
   @Output() save = new EventEmitter<void>();
 
   onSave() {
+    this.onSaveProp();
     this.save.emit();
   }
   constructor() {}

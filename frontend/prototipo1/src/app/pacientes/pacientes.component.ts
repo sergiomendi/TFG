@@ -1,10 +1,8 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { Escena } from '../models/escena';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faCirclePlay,
   faMagnifyingGlass,
   faPenToSquare,
   faTrash,
@@ -15,9 +13,13 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  Validators,
+} from '@angular/forms';
 import { MiDialogComponent } from '../components/dialog/dialog.component';
-import { MiSelectComponent } from '../components/select/select.component';
 import { Dialog } from 'primeng/dialog';
 import { Paciente } from '../models/paciente';
 import { ModalCrearPacienteComponent } from './modal-crear-paciente/modal-crear-paciente.component';
@@ -25,6 +27,11 @@ import {
   MiTablaComponent,
   TableColumn,
 } from '../components/table/mi-tabla.component';
+import { ApiService } from '../services/api.service'; // Import the ApiService
+import { ApiResponse } from '../models/api-respuesta';
+import { getCurrentDayUnix, unixToShortDate } from '../helpers/time';
+import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'app-pacientes',
   standalone: true,
@@ -44,11 +51,12 @@ import {
   ],
   templateUrl: './pacientes.component.html',
 })
-export class PacientesComponent {
+export class PacientesComponent implements OnInit {
   @ViewChild('dialogCrear') dialogCrear: Dialog | undefined;
   @ViewChild('dialogEliminar') dialogEliminar: Dialog | undefined;
-  pacientes!: Paciente[];
+  pacientes: Paciente[] = [];
   columns: TableColumn[] = [];
+  idSelectedPaciente: number | null = null;
   faMagnifyingGlass = faMagnifyingGlass;
   faPenToSquare = faPenToSquare;
   faTrash = faTrash;
@@ -56,30 +64,22 @@ export class PacientesComponent {
   ModalCrearVisible: boolean = false;
   ModalEliminarVisible: boolean = false;
   isModalEditar: boolean = false;
+  crearPacienteForm: FormGroup;
 
-  constructor() {
-    this.pacientes = [
-      {
-        nombre: 'Paciente 1',
-        fechaAlta: new Date('2023-01-01').toLocaleDateString(),
-      },
-      {
-        nombre: 'Paciente 2',
-        fechaAlta: new Date('2023-02-15').toLocaleDateString(),
-      },
-      {
-        nombre: 'Paciente 3',
-        fechaAlta: new Date('2023-03-20').toLocaleDateString(),
-      },
-      {
-        nombre: 'Paciente 4',
-        fechaAlta: new Date('2023-04-10').toLocaleDateString(),
-      },
-      {
-        nombre: 'Paciente 5',
-        fechaAlta: new Date('2023-05-05').toLocaleDateString(),
-      },
-    ];
+  constructor(
+    private apiService: ApiService,
+    private messageService: MessageService,
+    private fb: FormBuilder
+  ) {
+    this.crearPacienteForm = this.fb.group({
+      nombre: ['', Validators.required], // Campo obligatorio
+      fechaAlta: [getCurrentDayUnix(), Validators.required], // Campo obligatorio
+      comentarios: ['', Validators.required], // Campo obligatorio
+    });
+  }
+
+  ngOnInit(): void {
+    this.fetchPacientes();
 
     this.columns = [
       { field: 'nombre', header: 'Nombre' },
@@ -89,14 +89,78 @@ export class PacientesComponent {
     ];
   }
 
+  fetchPacientes(): void {
+    this.apiService.getPacientes().subscribe({
+      next: (response: ApiResponse) => {
+        if (response.ok) {
+          this.pacientes = response.data.map((paciente: any) => ({
+            ...paciente,
+            fechaAlta: unixToShortDate(paciente.fechaAlta),
+          }));
+        }
+      },
+    });
+  }
+
+  eliminarPaciente(): void {
+    if (this.idSelectedPaciente !== null) {
+      this.apiService.deletePaciente(this.idSelectedPaciente).subscribe({
+        next: () => {
+          this.idSelectedPaciente = null;
+          this.ModalEliminarVisible = false;
+          this.fetchPacientes();
+          this.showToast('Elemento eliminado');
+        },
+      });
+    }
+  }
+
+  showToast(msg: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: msg,
+      life: 3000,
+    });
+  }
+
+  onCreateSubmit(): void {
+    if (this.isModalEditar) {
+      console.log('Datos enviados:', this.crearPacienteForm.value);
+      this.apiService
+        .updatePaciente(this.idSelectedPaciente!, this.crearPacienteForm.value)
+        .subscribe({
+          next: () => {
+            this.fetchPacientes();
+            this.ModalCrearVisible = false;
+          },
+        });
+    } else {
+      this.apiService.createPaciente(this.crearPacienteForm.value).subscribe({
+        next: () => {
+          this.fetchPacientes();
+          this.ModalCrearVisible = false;
+          this.showToast('Elemento creado');
+        },
+      });
+    }
+  }
+
   showDialogCrearExp() {
     if (this.dialogCrear) {
       this.dialogCrear.visible = true;
     }
   }
 
-  showDialogEliminarExp() {
+  showDialogEditarExp(id: number) {
+    if (this.dialogCrear) {
+      this.idSelectedPaciente = id;
+      this.dialogCrear.visible = true;
+    }
+  }
+
+  showDialogEliminarExp(id: number) {
     if (this.dialogEliminar) {
+      this.idSelectedPaciente = id;
       this.dialogEliminar.visible = true;
     }
   }

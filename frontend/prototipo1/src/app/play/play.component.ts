@@ -39,7 +39,11 @@ export class PlayComponent implements AfterViewInit {
   ModalSalirVisible: boolean = false;
   isLoading: boolean = true; // Variable para controlar el indicador de carga
 
-  images: string[] = ['/assets/blinds.jpg', '/assets/brown_photostudio_04.jpg'];
+  images: string[] = [
+    '/assets/blinds.jpg',
+    '/assets/brown_photostudio_04.jpg',
+    '/assets/myroom.jpg',
+  ];
   currentImageIndex: number = 0;
   viewer: any;
   scene: any;

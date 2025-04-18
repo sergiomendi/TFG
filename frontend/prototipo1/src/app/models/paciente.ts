@@ -1,9 +1,11 @@
 export class Paciente {
-  fechaAlta: string;
+  fechaAlta: number;
   nombre: string;
+  comentarios: string;
 
-  constructor(fechaAlta: string, titulo: string) {
+  constructor(fechaAlta: number, titulo: string, comentarios: string) {
     this.fechaAlta = fechaAlta;
     this.nombre = titulo;
+    this.comentarios = comentarios;
   }
 }

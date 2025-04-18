@@ -1,10 +1,22 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { RegistroExperiencia } from '../../models/registro-experiencia';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormsModule,
+  NgModel,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -24,6 +36,10 @@ import {
 } from '../../components/table/mi-tabla.component';
 import { MiDialogComponent } from '../../components/dialog/dialog.component';
 import { Dialog } from 'primeng/dialog';
+import { UnixToShortDatePipe } from '../../pipes/unix-to-short-date';
+import { ApiService } from '../../services/api.service';
+import { ApiResponse } from '../../models/api-respuesta';
+import { getCurrentDayUnix } from '../../helpers/time';
 
 @Component({
   selector: 'modal-crear-paciente-content',
@@ -43,10 +59,14 @@ import { Dialog } from 'primeng/dialog';
     FontAwesomeModule,
     MiTablaComponent,
     MiDialogComponent,
+    ReactiveFormsModule,
+    UnixToShortDatePipe,
   ],
 })
-export class ModalCrearPacienteComponent {
+export class ModalCrearPacienteComponent implements OnChanges {
   @Input() isModalEditar: boolean = false;
+  @Input() formGroup!: FormGroup;
+  @Input() idPaciente: number | null = null;
   @ViewChild('dialogDetalleExperiencia') dialogDetalleExperiencia:
     | Dialog
     | undefined;
@@ -66,7 +86,7 @@ export class ModalCrearPacienteComponent {
     new RegistroExperiencia('2023-03-01', 'Experiencia 3'),
   ];
 
-  constructor() {
+  constructor(private apiService: ApiService) {
     this.columns = [
       { field: 'titulo', header: 'Titulo' },
       { field: 'fechaAlta', header: 'Fecha de alta' },
@@ -77,6 +97,21 @@ export class ModalCrearPacienteComponent {
       { field: 'accion4', header: '', width: '10%' },
     ];
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['idPaciente'] && this.isModalEditar && this.idPaciente) {
+      this.apiService.getPacienteById(this.idPaciente).subscribe({
+        next: (response: ApiResponse) => {
+          this.formGroup.patchValue({
+            nombre: response.data.nombre,
+            fechaAlta: response.data.fechaAlta,
+            comentarios: response.data.comentarios,
+          });
+        },
+      });
+    }
+  }
+
   showDialogDetalleExp() {
     if (this.dialogDetalleExperiencia) {
       this.dialogDetalleExperiencia.visible = true;
