@@ -36,4 +36,14 @@ export class ApiService {
     const url = `${this.baseUrl}/api/paciente/${id}`;
     return this.http.delete(url);
   }
+
+  getExperienciasByPacienteId(id: number | null): Observable<any> {
+    const url = `${this.baseUrl}/api/experiencia/paciente/${id}`;
+    return this.http.get(url);
+  }
+
+  getEventosByExperienciaId(id: number | null): Observable<any> {
+    const url = `${this.baseUrl}/api/evento/experiencia/${id}`;
+    return this.http.get(url);
+  }
 }

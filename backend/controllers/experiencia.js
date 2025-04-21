@@ -1,5 +1,35 @@
 const { response } = require("express");
+// Obtener experiencias por idPaciente
+const obtenerExperienciasPorIdPaciente = async (req, res = response) => {
+  const id_paciente = req.params.id_paciente;
 
+  if (!id_paciente) {
+    return res.status(400).json({
+      ok: false,
+      msg: "El id_paciente es requerido",
+    });
+  }
+
+  try {
+    // Obtener experiencias filtradas por id_paciente
+    const [data] = await global.db.query(
+      "SELECT * FROM experiencia WHERE id_paciente = ?",
+      [id_paciente]
+    );
+
+    res.json({
+      ok: true,
+      msg: "obtenerExperienciasPorIdPaciente",
+      data,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error al obtener experiencias por id_paciente",
+    });
+  }
+};
 // Obtener experiencias con paginación
 const obtenerExperiencias = async (req, res = response) => {
   const desde = Number(req.query.desde) || 0;
@@ -187,6 +217,7 @@ const borrarExperiencia = async (req, res = response) => {
 };
 
 module.exports = {
+  obtenerExperienciasPorIdPaciente,
   obtenerExperiencias,
   crearExperiencia,
   actualizarExperiencia,

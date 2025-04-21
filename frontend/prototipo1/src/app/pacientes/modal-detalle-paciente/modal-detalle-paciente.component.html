@@ -1,0 +1,34 @@
+<mi-dialog
+  #dialogDetalleExperiencia
+  [header]="'Experiencia'"
+  [styleClass]="{ width: '80%', minHeight: '80%' }"
+>
+  <modal-eventos
+    [idExp]="idSelectedExp"
+    [expName]="nombreSelectedExp"
+  ></modal-eventos>
+</mi-dialog>
+
+<!-- Tabla de experiencias -->
+<mi-tabla
+  [columns]="expPacientesColumns"
+  [data]="experiencias"
+  [filterBy]="'titulo'"
+>
+  <ng-template #accion1Template>
+    <fa-icon [icon]="faFaceSmile"></fa-icon>
+  </ng-template>
+  <ng-template #accion2Template>
+    <fa-icon [icon]="faFaceSmile"></fa-icon>
+  </ng-template>
+  <ng-template #accion3Template>
+    <fa-icon [icon]="faFaceSmile"></fa-icon>
+  </ng-template>
+  <ng-template #accion4Template let-exp>
+    <fa-icon
+      [icon]="faEye"
+      class="text-lime-500 cursor-pointer"
+      (click)="showDialogDetalleExp(exp.id, exp.titulo)"
+    ></fa-icon>
+  </ng-template>
+</mi-tabla>

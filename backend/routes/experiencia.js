@@ -4,6 +4,7 @@ Ruta base: /api/experiencias
 
 const { Router } = require("express");
 const {
+  obtenerExperienciasPorIdPaciente,
   obtenerExperiencias,
   crearExperiencia,
   actualizarExperiencia,
@@ -14,6 +15,16 @@ const { validarCampos } = require("../middleware/validar-campos");
 const { validarJWT } = require("../middleware/validar-jwt");
 
 const router = Router();
+
+// Obtener experiencias por id de paciente
+router.get(
+  "/paciente/:id_paciente",
+  [
+    check("id_paciente", "El id del paciente debe ser un número").isNumeric(),
+    validarCampos,
+  ],
+  obtenerExperienciasPorIdPaciente
+);
 
 // Obtener experiencias
 router.get(

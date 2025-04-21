@@ -1,12 +1,7 @@
 <mi-dialog
   #dialogCrear
-  [visible]="ModalCrearVisible"
   [header]="this.isModalEditar ? 'Editar paciente' : 'Crear paciente'"
-  [styleClass]="
-    this.isModalEditar
-      ? { width: '70%', minHeight: '80%' }
-      : { width: '60%', minHeight: '50%' }
-  "
+  [styleClass]="{ width: '60%', minHeight: '50%' }"
   (save)="this.onCreateSubmit()"
 >
   <modal-crear-paciente-content
@@ -17,7 +12,6 @@
 </mi-dialog>
 <mi-dialog
   #dialogEliminar
-  [visible]="ModalEliminarVisible"
   [onSaveProp]="this.eliminarPaciente.bind(this)"
   [header]="'Eliminar escena'"
   [styleClass]="{ width: '20%', minHeight: '25%' }"
@@ -28,6 +22,16 @@
     icon="pi pi-exclamation-triangle"
     text="¿Está seguro de que desea eliminar?"
   />
+</mi-dialog>
+
+<mi-dialog
+  #dialogDetallePaciente
+  [header]="'Experiencias del paciente'"
+  [styleClass]="{ width: '70%', minHeight: '80%' }"
+>
+  <modal-detalle-paciente
+    [idPaciente]="idSelectedPaciente"
+  ></modal-detalle-paciente>
 </mi-dialog>
 
 <div class="flex items-center justify-center h-full">
@@ -41,24 +45,34 @@
         <fa-icon [icon]="faPlus"></fa-icon>
       </button>
     </ng-template>
-    <ng-template #accion1Template let-product>
+    <ng-template #accion1Template let-paciente>
+      <button
+        pButton
+        [rounded]="true"
+        [text]="true"
+        (click)="showDialogDetallePaciente(paciente.id)"
+      >
+        <fa-icon [icon]="faEye"></fa-icon>
+      </button>
+    </ng-template>
+    <ng-template #accion2Template let-paciente>
       <button
         pButton
         [rounded]="true"
         [text]="true"
         severity="warn"
-        (click)="showDialogEditarExp(product.id); this.isModalEditar = true"
+        (click)="showDialogEditarExp(paciente.id); this.isModalEditar = true"
       >
         <fa-icon [icon]="faPenToSquare"></fa-icon>
       </button>
     </ng-template>
-    <ng-template #accion2Template let-product>
+    <ng-template #accion3Template let-paciente>
       <button
         pButton
         [rounded]="true"
         [text]="true"
         severity="danger"
-        (click)="showDialogEliminarExp(product.id)"
+        (click)="showDialogEliminarExp(paciente.id)"
       >
         <fa-icon [icon]="faTrash"></fa-icon>
       </button>

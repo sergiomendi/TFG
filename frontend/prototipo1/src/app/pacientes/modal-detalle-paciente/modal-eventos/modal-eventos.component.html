@@ -1,0 +1,29 @@
+<div class="flex flex-col gap-6">
+  <div class="flex gap-6">
+    <input
+      pInputText
+      type="text"
+      placeholder="Nombre"
+      [defaultValue]="expName"
+      class="w-xl"
+      disabled
+    />
+
+    <input
+      pInputText
+      type="text"
+      [defaultValue]="'12/06/25 14:30:00 - 12/06/25 15:30:00'"
+      placeholder="Fecha"
+      class="w-full"
+      disabled
+    />
+  </div>
+  <textarea
+    rows="15"
+    cols="30"
+    placeholder="Registro"
+    pTextarea
+    [defaultValue]="events"
+    class="w-full h-full"
+  ></textarea>
+</div>

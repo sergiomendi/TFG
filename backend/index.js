@@ -21,6 +21,6 @@ app.use("/api/escena", require("./routes/escena"));
 app.use("/api/evento", require("./routes/evento"));
 
 // Abrir la aplicacíon en el puerto 3000
-app.listen(process.env.PORT, () => {
+app.listen(3000, () => {
   console.log(`Servidor corriendo en: http://localhost:${process.env.PORT}`);
 });
