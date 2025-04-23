@@ -5,7 +5,7 @@ import { FileUploadComponent } from '../../components/fileUpload/mi-file-upload.
 import { OnChanges, SimpleChanges } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { ApiResponse } from '../../models/api-respuesta';
-import { getCurrentDayUnix, unixToShortDate } from '../../helpers/time';
+import { getCurrentDayString, unixToShortDate } from '../../helpers/time';
 
 @Component({
   selector: 'modal-crear-escena-content',
@@ -18,7 +18,7 @@ export class ModalCrearEscenaComponent implements OnChanges {
 
   titulo: string = '';
   descripcion: string = '';
-  fecha: string = getCurrentDayUnix().toString();
+  fecha: string = getCurrentDayString();
 
   constructor(private apiService: ApiService) {}
 
