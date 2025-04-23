@@ -8,11 +8,13 @@
 <mi-dialog
   #dialogCrear
   [visible]="ModalCrearExpVisible"
-  [header]="'Crear escena'"
+  [header]="selectedIdEscena ? 'Editar escena' : 'Crear escena'"
   [styleClass]="{ width: '80%', minHeight: '80%' }"
 >
   <form>
-    <modal-crear-escena-content></modal-crear-escena-content>
+    <modal-crear-escena-content
+      [id]="selectedIdEscena"
+    ></modal-crear-escena-content>
   </form>
 </mi-dialog>
 <mi-dialog
@@ -35,7 +37,7 @@
         <fa-icon [icon]="faPlus"></fa-icon>
       </button>
     </ng-template>
-    <ng-template #accion1Template let-product>
+    <ng-template #accion1Template let-escena>
       <button
         pButton
         [rounded]="true"
@@ -45,18 +47,18 @@
         <fa-icon [icon]="faCirclePlay" class="text-xl"></fa-icon>
       </button>
     </ng-template>
-    <ng-template #accion2Template let-product>
+    <ng-template #accion2Template let-escena>
       <button
         pButton
         [rounded]="true"
         [text]="true"
         severity="warn"
-        (click)="showDialogCrearExp()"
+        (click)="showDialogCrearExp(); selectedIdEscena = escena.id"
       >
         <fa-icon [icon]="faPenToSquare"></fa-icon>
       </button>
     </ng-template>
-    <ng-template #accion3Template let-product>
+    <ng-template #accion3Template let-escena>
       <button
         pButton
         [rounded]="true"

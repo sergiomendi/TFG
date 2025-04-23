@@ -3,17 +3,24 @@
     <input
       pInputText
       type="text"
-      [defaultValue]="'12/06/25'"
+      [defaultValue]="fecha"
       placeholder="Fecha"
       class="w-1/4"
       disabled
     />
-    <input pInputText type="text" placeholder="Titulo" class="w-full" />
+    <input
+      pInputText
+      type="text"
+      placeholder="Titulo"
+      [defaultValue]="titulo"
+      class="w-full"
+    />
   </div>
   <textarea
     rows="5"
     cols="30"
     placeholder="Descripción"
+    [defaultValue]="descripcion"
     pTextarea
     class="w-full"
   ></textarea>

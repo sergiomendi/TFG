@@ -63,11 +63,13 @@ export class ModalDetallePacienteComponent {
       },
     });
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['idPaciente'] && changes['idPaciente'].currentValue) {
       this.fetchExperiencias();
     }
   }
+
   showDialogDetalleExp(id: number, nombre: string) {
     if (this.dialogDetalleExperiencia) {
       this.dialogDetalleExperiencia.visible = true;

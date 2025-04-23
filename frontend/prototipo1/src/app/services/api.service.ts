@@ -46,4 +46,14 @@ export class ApiService {
     const url = `${this.baseUrl}/api/evento/experiencia/${id}`;
     return this.http.get(url);
   }
+
+  getEscenas(): Observable<any> {
+    const url = `${this.baseUrl}/api/escena`;
+    return this.http.get(url);
+  }
+
+  getEscenaById(id: number | null): Observable<any> {
+    const url = `${this.baseUrl}/api/escena/${id}`;
+    return this.http.get(url);
+  }
 }

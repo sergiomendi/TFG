@@ -25,6 +25,9 @@ import {
   MiTablaComponent,
   TableColumn,
 } from '../components/table/mi-tabla.component';
+import { ApiService } from '../services/api.service';
+import { ApiResponse } from '../models/api-respuesta';
+import { unixToShortDate } from '../helpers/time';
 
 @Component({
   selector: 'app-escenas',
@@ -62,25 +65,13 @@ export class EscenasComponent {
   ModalEliminarVisible: boolean = false;
   pacientes: any[] | undefined;
 
-  constructor(private router: Router) {}
+  selectedIdEscena: number | null = null;
+
+  constructor(private router: Router, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.escenas = [
-      { titulo: 'Escena 1', fechaAlta: new Date().toLocaleDateString() },
-      { titulo: 'Escena 2', fechaAlta: new Date().toLocaleDateString() },
-      { titulo: 'Escena 3', fechaAlta: new Date().toLocaleDateString() },
-      { titulo: 'Escena 4', fechaAlta: new Date().toLocaleDateString() },
-      { titulo: 'Escena 5', fechaAlta: new Date().toLocaleDateString() },
-    ];
-    this.pacientes = [
-      'John Doe',
-      'Jane Smith',
-      'Michael Johnson',
-      'Emily Davis',
-      'William Brown',
-      'Sophia Wilson',
-      'James Taylor',
-    ];
+    this.fetchEscenas();
+    this.fetchPacientesSelect();
     this.columns = [
       { field: 'accion1', header: '', width: '5%' },
       { field: 'titulo', header: 'Titulo' },
@@ -88,6 +79,25 @@ export class EscenasComponent {
       { field: 'accion2', header: '', width: '5%' },
       { field: 'accion3', header: '', width: '5%' },
     ];
+  }
+
+  fetchEscenas() {
+    this.apiService.getEscenas().subscribe((response: ApiResponse) => {
+      if (response.ok) {
+        this.escenas = response.data.map((escena: any) => ({
+          ...escena,
+          fechaAlta: unixToShortDate(escena.fechaAlta),
+        }));
+      }
+    });
+  }
+
+  fetchPacientesSelect() {
+    this.apiService.getPacientes().subscribe((response: ApiResponse) => {
+      if (response.ok) {
+        this.pacientes = response.data;
+      }
+    });
   }
 
   redirectToPlay() {
