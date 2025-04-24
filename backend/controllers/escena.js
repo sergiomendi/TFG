@@ -64,13 +64,13 @@ const obtenerEscenas = async (req, res = response) => {
 
 // Crear una nueva escena
 const crearEscena = async (req, res = response) => {
-  const { titulo, fechaAlta } = req.body;
+  const { titulo, fechaAlta, descripcion } = req.body;
 
   try {
     // Insertar una nueva escena
     const [result] = await global.db.query(
-      "INSERT INTO escena (titulo, fechaAlta) VALUES (?, ?)",
-      [titulo, fechaAlta]
+      "INSERT INTO escena (titulo, fechaAlta, descripcion) VALUES (?, ?, ?)",
+      [titulo, fechaAlta, descripcion]
     );
 
     res.json({
@@ -80,6 +80,7 @@ const crearEscena = async (req, res = response) => {
         id: result.insertId,
         titulo,
         fechaAlta,
+        descripcion,
       },
     });
   } catch (error) {
@@ -94,13 +95,13 @@ const crearEscena = async (req, res = response) => {
 // Actualizar una escena existente
 const actualizarEscena = async (req, res = response) => {
   const id = req.params.id;
-  const { titulo, fechaAlta } = req.body;
+  const { titulo, fechaAlta, descripcion } = req.body;
 
   try {
     // Actualizar una escena existente
     const [result] = await global.db.query(
-      "UPDATE escena SET titulo = ?, fechaAlta = ? WHERE id = ?",
-      [titulo, fechaAlta, id]
+      "UPDATE escena SET titulo = ?, fechaAlta = ?, descripcion = ? WHERE id = ?",
+      [titulo, fechaAlta, descripcion, id]
     );
 
     if (result.affectedRows === 0) {

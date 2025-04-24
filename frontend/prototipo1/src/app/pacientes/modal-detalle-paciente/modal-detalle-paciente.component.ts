@@ -41,9 +41,8 @@ export class ModalDetallePacienteComponent {
 
   constructor(private apiService: ApiService) {
     this.expPacientesColumns = [
-      { field: 'titulo', header: 'Titulo' },
       { field: 'fechaAlta', header: 'Fecha de alta' },
-      { field: 'tiempoTotal', header: 'Duración (min)' },
+      { field: 'duracion', header: 'Duración (min)' },
       { field: 'accion1', header: 'Ansiedad Inicio', width: '15%' },
       { field: 'accion2', header: 'Ansiedad Final', width: '15%' },
       { field: 'accion3', header: 'Ansiedad Media', width: '15%' },
@@ -74,7 +73,6 @@ export class ModalDetallePacienteComponent {
     if (this.dialogDetalleExperiencia) {
       this.dialogDetalleExperiencia.visible = true;
       this.idSelectedExp = id;
-      this.nombreSelectedExp = nombre;
     }
   }
 }

@@ -1,9 +1,9 @@
-<div class="flex flex-col gap-6">
+<form class="flex flex-col gap-6" [formGroup]="formGroup">
   <div class="flex gap-6">
     <input
       pInputText
       type="text"
-      [defaultValue]="fecha"
+      [value]="formGroup.get('fechaAlta')?.value | unixToShortDate"
       placeholder="Fecha"
       class="w-1/4"
       disabled
@@ -12,7 +12,7 @@
       pInputText
       type="text"
       placeholder="Titulo"
-      [defaultValue]="titulo"
+      formControlName="titulo"
       class="w-full"
     />
   </div>
@@ -20,10 +20,10 @@
     rows="5"
     cols="30"
     placeholder="Descripción"
-    [defaultValue]="descripcion"
+    formControlName="descripcion"
     pTextarea
     class="w-full"
   ></textarea>
 
   <mi-file-upload></mi-file-upload>
-</div>
+</form>

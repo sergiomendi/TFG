@@ -56,4 +56,28 @@ export class ApiService {
     const url = `${this.baseUrl}/api/escena/${id}`;
     return this.http.get(url);
   }
+
+  createEscena(escena: any): Observable<any> {
+    console.log('Escena:', escena);
+    const url = `${this.baseUrl}/api/escena`;
+    return this.http.post(url, escena);
+  }
+  updateEscena(id: number, escena: any): Observable<any> {
+    const url = `${this.baseUrl}/api/escena/${id}`;
+    return this.http.put(url, escena);
+  }
+  deleteEscena(id: number): Observable<any> {
+    const url = `${this.baseUrl}/api/escena/${id}`;
+    return this.http.delete(url);
+  }
+
+  createExperiencia(experiencia: any): Observable<any> {
+    const url = `${this.baseUrl}/api/experiencia`;
+    return this.http.post(url, experiencia);
+  }
+
+  updateExperiencia(id: number, experiencia: any): Observable<any> {
+    const url = `${this.baseUrl}/api/experiencia/${id}`;
+    return this.http.put(url, experiencia);
+  }
 }

@@ -43,10 +43,6 @@ router.get(
 router.post(
   "/",
   [
-    check("titulo", "El argumento titulo es obligatorio")
-      .not()
-      .isEmpty()
-      .trim(),
     check(
       "duracion",
       "El argumento duracion es obligatorio y debe ser un número"

@@ -14,6 +14,7 @@ import { MessageModule } from 'primeng/message';
 import { Dialog } from 'primeng/dialog';
 import { ButtonBarComponent } from './button-bar/button-bar.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'play',
@@ -48,7 +49,11 @@ export class PlayComponent implements AfterViewInit {
   viewer: any;
   scene: any;
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private apiService: ApiService
+  ) {}
 
   ngAfterViewInit() {
     this.loadScene();
@@ -149,6 +154,7 @@ export class PlayComponent implements AfterViewInit {
   }
 
   exit() {
+    // this.apiService.updateExperiencia()
     this.router.navigate(['/escenas']);
   }
 

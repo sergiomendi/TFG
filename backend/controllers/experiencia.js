@@ -79,7 +79,6 @@ const obtenerExperiencias = async (req, res = response) => {
 // Crear una nueva experiencia
 const crearExperiencia = async (req, res = response) => {
   const {
-    titulo,
     duracion,
     fechaAlta,
     estresInicial,
@@ -91,16 +90,8 @@ const crearExperiencia = async (req, res = response) => {
   try {
     // Insertar una nueva experiencia
     const [result] = await global.db.query(
-      "INSERT INTO experiencia (titulo, duracion, fechaAlta, estresInicial, estresFinal, id_escena, id_paciente) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [
-        titulo,
-        duracion,
-        fechaAlta,
-        estresInicial,
-        estresFinal,
-        id_escena,
-        id_paciente,
-      ]
+      "INSERT INTO experiencia (duracion, fechaAlta, estresInicial, estresFinal, id_escena, id_paciente) VALUES (?, ?, ?, ?, ?, ?)",
+      [duracion, fechaAlta, estresInicial, estresFinal, id_escena, id_paciente]
     );
 
     res.json({
@@ -108,7 +99,6 @@ const crearExperiencia = async (req, res = response) => {
       msg: "Experiencia creada",
       experiencia: {
         id: result.insertId,
-        titulo,
         duracion,
         fechaAlta,
         estresInicial,

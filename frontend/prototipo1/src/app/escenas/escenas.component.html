@@ -1,26 +1,29 @@
 <mi-dialog
   #dialogIniciar
   [header]="'Selecciona paciente'"
-  (save)="redirectToPlay()"
+  (save)="redirectToPlay(); crearExperiencia()"
 >
-  <mi-select [options]="this.pacientes || []" [expanded]="true"></mi-select>
+  <form [formGroup]="iniciarEscenaForm">
+    <mi-select formControlName="idPaciente" [options]="pacientes"></mi-select>
+  </form>
 </mi-dialog>
 <mi-dialog
   #dialogCrear
   [visible]="ModalCrearExpVisible"
   [header]="selectedIdEscena ? 'Editar escena' : 'Crear escena'"
-  [styleClass]="{ width: '80%', minHeight: '80%' }"
+  [styleClass]="{ width: '60%', minHeight: '80%' }"
+  (save)="onCreateSubmit()"
 >
-  <form>
-    <modal-crear-escena-content
-      [id]="selectedIdEscena"
-    ></modal-crear-escena-content>
-  </form>
+  <modal-crear-escena-content
+    [id]="selectedIdEscena"
+    [formGroup]="crearEscenaForm"
+  ></modal-crear-escena-content>
 </mi-dialog>
 <mi-dialog
   #dialogEliminar
   [visible]="ModalEliminarVisible"
   [header]="'Eliminar escena'"
+  [onSaveProp]="eliminarEscena.bind(this)"
   [styleClass]="{ width: '20%', minHeight: '25%' }"
 >
   <p-message
@@ -33,7 +36,11 @@
 <div class="flex items-center justify-center h-full">
   <mi-tabla [columns]="columns" [data]="escenas" [filterBy]="'titulo'">
     <ng-template #captionTemplate>
-      <button pButton label="Crear escena" (click)="showDialogCrearExp()">
+      <button
+        pButton
+        label="Crear escena"
+        (click)="showDialogCrearExp(); this.isModalEditar = false"
+      >
         <fa-icon [icon]="faPlus"></fa-icon>
       </button>
     </ng-template>
@@ -42,7 +49,7 @@
         pButton
         [rounded]="true"
         [text]="true"
-        (click)="showDialogIniciarExp()"
+        (click)="showDialogIniciarExp(); selectedIdEscena = escena.id"
       >
         <fa-icon [icon]="faCirclePlay" class="text-xl"></fa-icon>
       </button>
@@ -53,7 +60,11 @@
         [rounded]="true"
         [text]="true"
         severity="warn"
-        (click)="showDialogCrearExp(); selectedIdEscena = escena.id"
+        (click)="
+          showDialogCrearExp();
+          selectedIdEscena = escena.id;
+          this.isModalEditar = true
+        "
       >
         <fa-icon [icon]="faPenToSquare"></fa-icon>
       </button>
@@ -64,7 +75,7 @@
         [rounded]="true"
         [text]="true"
         severity="danger"
-        (click)="showDialogEliminarExp()"
+        (click)="showDialogEliminarExp(); selectedIdEscena = escena.id"
       >
         <fa-icon [icon]="faTrash"></fa-icon>
       </button>
