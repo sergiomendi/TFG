@@ -41,6 +41,7 @@ export class ModalCrearEscenaComponent implements OnChanges {
             titulo: response.data.titulo || '',
             fechaAlta: response.data.fechaAlta,
             descripcion: response.data.descripcion || '',
+            fotos: response.data.fotos || [],
           });
         }
       },

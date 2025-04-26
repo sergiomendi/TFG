@@ -90,6 +90,7 @@ export class EscenasComponent {
       titulo: ['', Validators.required],
       fechaAlta: [getCurrentDayUnix(), Validators.required],
       descripcion: '',
+      fotos: [[], Validators.required],
     });
     this.iniciarEscenaForm = this.fb.group({
       idPaciente: ['', Validators.required],
@@ -142,7 +143,20 @@ export class EscenasComponent {
         });
     } else {
       this.apiService.createEscena(this.crearEscenaForm.value).subscribe({
-        next: () => {
+        next: (response: ApiResponse) => {
+          let idEscenaCreada = response.data.id || 0;
+
+          if (this.crearEscenaForm.value.fotos) {
+            this.crearEscenaForm.value.fotos.forEach((file: File) => {
+              const formData = new FormData();
+              formData.append('archivo', file);
+              this.apiService.uploadFiles(formData, idEscenaCreada).subscribe({
+                next: (response: any) => {
+                  console.log('Archivo subido correctamente:', response);
+                },
+              });
+            });
+          }
           this.fetchEscenas();
           if (this.dialogCrear) this.dialogCrear.visible = false;
           this.showToast('Elemento creado');

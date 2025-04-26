@@ -15,6 +15,7 @@ dbConnection();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.json());
 app.use(
   fileUpload({
     limits: { fileSize: process.env.MAXSIZEUPLOAD * 1024 * 1024 },

@@ -76,7 +76,7 @@ const crearEscena = async (req, res = response) => {
     res.json({
       ok: true,
       msg: "Escena creada",
-      escena: {
+      data: {
         id: result.insertId,
         titulo,
         fechaAlta,

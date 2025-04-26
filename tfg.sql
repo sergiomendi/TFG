@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-04-2025 a las 19:47:26
+-- Tiempo de generación: 26-04-2025 a las 16:35:44
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -31,22 +31,24 @@ CREATE TABLE `escena` (
   `id` int(11) NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
-  `fechaAlta` int(11) NOT NULL
+  `fechaAlta` int(11) NOT NULL,
+  `fotos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`fotos`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `escena`
 --
 
-INSERT INTO `escena` (`id`, `titulo`, `descripcion`, `fechaAlta`) VALUES
-(1, 'Supermercado en hora punta', NULL, 1712899200),
-(2, 'Cena familiar con múltiples platos', NULL, 1713133200),
-(3, 'Comedor escolar al mediodía', NULL, 1713392400),
-(4, 'Fiesta con buffet libre', NULL, 1713565200),
-(5, 'Playa en verano con bañadores', NULL, 1713738000),
-(6, 'Restaurante elegante con varios comensales', NULL, 1713910800),
-(7, 'Gimnasio con espejos', NULL, 1714083600),
-(8, 'Pasarela de moda', NULL, 1714256400);
+INSERT INTO `escena` (`id`, `titulo`, `descripcion`, `fechaAlta`, `fotos`) VALUES
+(2, 'Cena familiar con múltiples platos', 'aaa', 1713133200, NULL),
+(3, 'Comedor escolar al mediodía', NULL, 1713392400, NULL),
+(4, 'Fiesta con buffet libree', NULL, 1713565200, NULL),
+(5, 'Playa en verano con bañadores', NULL, 1713738000, NULL),
+(6, 'Restaurante elegante con varios comensales', NULL, 1713910800, NULL),
+(7, 'Gimnasio con espejos', NULL, 1714083600, NULL),
+(8, 'Pasarela de moda', NULL, 1714256400, NULL),
+(13, 'Comedor escolar al mediodía', 'asdasd', 1713392400, NULL),
+(47, 'dasd', 'sadas', 1745676903, '[\"a76f49c9-964c-4aa8-82ad-6879413d385b.webp\"]');
 
 -- --------------------------------------------------------
 
@@ -69,7 +71,6 @@ CREATE TABLE `evento` (
 
 CREATE TABLE `experiencia` (
   `id` int(11) NOT NULL,
-  `titulo` varchar(255) NOT NULL,
   `duracion` int(11) NOT NULL,
   `fechaAlta` int(11) NOT NULL,
   `estresInicial` int(11) NOT NULL,
@@ -77,6 +78,14 @@ CREATE TABLE `experiencia` (
   `id_escena` int(11) NOT NULL,
   `id_paciente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `experiencia`
+--
+
+INSERT INTO `experiencia` (`id`, `duracion`, `fechaAlta`, `estresInicial`, `estresFinal`, `id_escena`, `id_paciente`) VALUES
+(9, 0, 1745509434, 0, 0, 2, 4),
+(10, 0, 1745510000, 0, 0, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -137,7 +146,7 @@ ALTER TABLE `paciente`
 -- AUTO_INCREMENT de la tabla `escena`
 --
 ALTER TABLE `escena`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `evento`
@@ -149,7 +158,7 @@ ALTER TABLE `evento`
 -- AUTO_INCREMENT de la tabla `experiencia`
 --
 ALTER TABLE `experiencia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `paciente`

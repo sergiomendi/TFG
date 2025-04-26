@@ -27,10 +27,12 @@
 </mi-dialog>
 
 <p-fileupload
-  name="myfile[]"
+  name="fotos"
   [multiple]="true"
   accept="image/*"
-  (onSelect)="onSelectedFiles($event)"
+  [customUpload]="true"
+  (onSelect)="onFileUpload($event)"
+  (onClear)="onClearFiles()"
 >
   <ng-template
     #header
@@ -45,7 +47,7 @@
         icon="pi pi-images"
         [rounded]="true"
         [outlined]="true"
-      />
+      ></p-button>
 
       <p-button
         (onClick)="clearCallback()"
@@ -54,7 +56,7 @@
         [outlined]="true"
         severity="danger"
         [disabled]="!files || files.length === 0"
-      />
+      ></p-button>
     </div>
   </ng-template>
   <ng-template
@@ -82,15 +84,13 @@
               />
             </div>
             <div class="flex flex-col gap-4 items-center">
-              <Input
+              <input
                 pInputText
                 type="text"
                 placeholder="Titulo"
                 [defaultValue]="file.name"
                 class="font-semibold text-ellipsis max-w-40 whitespace-nowrap overflow-hidden"
               />
-
-              <!-- <div>{{ formatSize(file.size) }}</div> -->
 
               <button
                 pButton
@@ -100,13 +100,11 @@
               ></button>
               <p-button
                 icon="pi pi-times"
-                (click)="
-                  onRemoveTemplatingFile($event, file, removeFileCallback, i)
-                "
+                (click)="onFileRemove(file.name)"
                 [outlined]="true"
                 [rounded]="true"
                 severity="danger"
-              />
+              ></p-button>
             </div>
           </div>
         </div>
@@ -119,7 +117,7 @@
       <i
         class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"
       ></i>
-      <p class="mt-6 mb-0">Drag and drop files to here to upload.</p>
+      <p class="mt-6 mb-0">Arrastra y suelta archivos aquí para subirlos.</p>
     </div>
   </ng-template>
 </p-fileupload>

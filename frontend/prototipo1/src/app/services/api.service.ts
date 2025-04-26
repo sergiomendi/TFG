@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -58,7 +58,6 @@ export class ApiService {
   }
 
   createEscena(escena: any): Observable<any> {
-    console.log('Escena:', escena);
     const url = `${this.baseUrl}/api/escena`;
     return this.http.post(url, escena);
   }
@@ -81,10 +80,41 @@ export class ApiService {
     return this.http.put(url, experiencia);
   }
 
-  uploadFiles(formData: FormData, tipo: string, id: string): Observable<any> {
+  uploadFiles(formData: FormData, id: number): Observable<any> {
     console.log('LLAMADA A LA API DE SUBIDA DE ARCHIVOS', formData);
-    const url = `${this.baseUrl}/api/upload/${tipo}/${id}`; // Incluye tipo e id en la URL
-    const headers = new HttpHeaders(); // No es necesario establecer enctype aquí
+    const url = `${this.baseUrl}/api/upload/${id}`;
+    const headers = new HttpHeaders();
     return this.http.post(url, formData, { headers });
+  }
+  getFiles(files: string[]): Observable<File[]> {
+    const url = `${this.baseUrl}/api/upload/getFiles`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http
+      .post<{ ok: boolean; files: { fileName: string; content: string }[] }>(
+        url,
+        { files },
+        { headers }
+      )
+      .pipe(
+        map((response) => {
+          if (response.ok && response.files) {
+            return response.files.map((file) => {
+              // Decodificar el contenido base64 y convertirlo en un Blob
+              const byteCharacters = atob(file.content);
+              const byteNumbers = new Array(byteCharacters.length).map((_, i) =>
+                byteCharacters.charCodeAt(i)
+              );
+              const byteArray = new Uint8Array(byteNumbers);
+
+              // Crear un objeto File
+              return new File([byteArray], file.fileName);
+            });
+          }
+          return [];
+        })
+      );
   }
 }
