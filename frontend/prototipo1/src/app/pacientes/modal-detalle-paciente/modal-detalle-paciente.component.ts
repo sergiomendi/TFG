@@ -41,6 +41,7 @@ export class ModalDetallePacienteComponent {
 
   constructor(private apiService: ApiService) {
     this.expPacientesColumns = [
+      { field: 'nombreEscena', header: 'Título' },
       { field: 'fechaAlta', header: 'Fecha de alta' },
       { field: 'duracion', header: 'Duración (min)' },
       { field: 'accion1', header: 'Ansiedad Inicio', width: '15%' },

@@ -13,7 +13,10 @@ const obtenerExperienciasPorIdPaciente = async (req, res = response) => {
   try {
     // Obtener experiencias filtradas por id_paciente
     const [data] = await global.db.query(
-      "SELECT * FROM experiencia WHERE id_paciente = ?",
+      `SELECT esc.titulo as nombreEscena, duracion, exp.fechaAlta, estresInicial, estresFinal, id_escena, id_paciente 
+      FROM experiencia exp
+      JOIN escena esc ON exp.id_escena = esc.id
+      WHERE id_paciente = ?`,
       [id_paciente]
     );
 

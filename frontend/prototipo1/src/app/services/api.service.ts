@@ -80,4 +80,11 @@ export class ApiService {
     const url = `${this.baseUrl}/api/experiencia/${id}`;
     return this.http.put(url, experiencia);
   }
+
+  uploadFiles(formData: FormData, tipo: string, id: string): Observable<any> {
+    console.log('LLAMADA A LA API DE SUBIDA DE ARCHIVOS', formData);
+    const url = `${this.baseUrl}/api/upload/${tipo}/${id}`; // Incluye tipo e id en la URL
+    const headers = new HttpHeaders(); // No es necesario establecer enctype aquí
+    return this.http.post(url, formData, { headers });
+  }
 }

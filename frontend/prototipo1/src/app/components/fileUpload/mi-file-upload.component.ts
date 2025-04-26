@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http'; // Importa HttpClientMo
 import { InputText } from 'primeng/inputtext';
 import { Dialog } from 'primeng/dialog';
 import { MiDialogComponent } from '../dialog/dialog.component';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'mi-file-upload',
@@ -32,7 +33,7 @@ export class FileUploadComponent {
   totalSizePercent: number = 0;
   @ViewChild('dialogRetos') dialogRetos: Dialog | undefined;
 
-  constructor() {}
+  constructor(private apiService: ApiService) {}
 
   showDialogRetos() {
     if (this.dialogRetos) {
@@ -69,14 +70,32 @@ export class FileUploadComponent {
     this.totalSizePercent = 0;
   }
 
-  onTemplatedUpload() {}
-
   onSelectedFiles(event: any) {
-    this.files = event.currentFiles;
+    const files = event.currentFiles;
+    console.log('Archivos seleccionados:', files);
+    this.files = files;
+
+    // Calcular el tamaño total de los archivos seleccionados
     this.files.forEach((file: File) => {
       this.totalSize += parseInt(this.formatSize(file.size));
     });
     this.totalSizePercent = this.totalSize / 10;
+
+    // Crear el FormData y agregar los archivos con el nombre 'archivo'
+    const formData = new FormData();
+    files.forEach((file: File) => {
+      formData.append('archivo', file); // Cambiado a 'archivo'
+    });
+
+    // Llamar al servicio para subir los archivos
+    this.apiService.uploadFiles(formData, 'prueba', files[0].name).subscribe({
+      next: (response: any) => {
+        console.log('Archivos subidos correctamente:', response);
+      },
+      error: (error) => {
+        console.error('Error al subir los archivos:', error);
+      },
+    });
   }
 
   uploadEvent(callback: any) {
