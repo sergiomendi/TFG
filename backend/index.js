@@ -28,6 +28,7 @@ app.use("/api/experiencia", require("./routes/experiencia"));
 app.use("/api/escena", require("./routes/escena"));
 app.use("/api/evento", require("./routes/evento"));
 app.use("/api/upload", require("./routes/upload"));
+app.use("/api/archivo", require("./routes/archivo"));
 
 // Abrir la aplicacíon en el puerto 3000
 app.listen(3000, () => {

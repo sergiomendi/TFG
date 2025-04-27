@@ -90,7 +90,7 @@ export class EscenasComponent {
       titulo: ['', Validators.required],
       fechaAlta: [getCurrentDayUnix(), Validators.required],
       descripcion: '',
-      fotos: [[], Validators.required],
+      fotos: this.fb.array([], Validators.required), // Array of objects
     });
     this.iniciarEscenaForm = this.fb.group({
       idPaciente: ['', Validators.required],
@@ -147,14 +147,16 @@ export class EscenasComponent {
           let idEscenaCreada = response.data.id || 0;
 
           if (this.crearEscenaForm.value.fotos) {
-            this.crearEscenaForm.value.fotos.forEach((file: File) => {
+            this.crearEscenaForm.value.fotos.forEach((data: any) => {
               const formData = new FormData();
-              formData.append('archivo', file);
-              this.apiService.uploadFiles(formData, idEscenaCreada).subscribe({
-                next: (response: any) => {
-                  console.log('Archivo subido correctamente:', response);
-                },
-              });
+              formData.append('archivo', data.file);
+              this.apiService
+                .uploadFiles(formData, idEscenaCreada, data.retos)
+                .subscribe({
+                  next: (response: any) => {
+                    console.log('Archivo subido correctamente:', response);
+                  },
+                });
             });
           }
           this.fetchEscenas();

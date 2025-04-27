@@ -30,7 +30,6 @@
   name="fotos"
   [multiple]="true"
   accept="image/*"
-  [customUpload]="true"
   (onSelect)="onFileUpload($event)"
   (onClear)="onClearFiles()"
 >
@@ -55,7 +54,7 @@
         [rounded]="true"
         [outlined]="true"
         severity="danger"
-        [disabled]="!files || files.length === 0"
+        [disabled]="!files || (files.length === 0 && this.files.length === 0)"
       ></p-button>
     </div>
   </ng-template>
@@ -67,10 +66,10 @@
     let-removeUploadedFileCallback="removeUploadedFileCallback"
   >
     <div class="flex flex-col gap-8 pt-2">
-      <div *ngIf="files?.length > 0">
+      <div *ngIf="this.files && this.files.length > 0">
         <div class="flex flex-wrap gap-4">
           <div
-            *ngFor="let file of files; let i = index"
+            *ngFor="let file of this.files; let i = index"
             class="px-6 py-4 rounded-border flex flex-col border border-surface items-center gap-4 justify-between"
           >
             <div class="flex items-center h-full">
@@ -113,7 +112,10 @@
   </ng-template>
   <ng-template #file></ng-template>
   <ng-template #empty>
-    <div class="flex items-center justify-center flex-col">
+    <div
+      class="flex items-center justify-center flex-col"
+      *ngIf="this.files.length == 0"
+    >
       <i
         class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"
       ></i>

@@ -36,7 +36,7 @@ import { ApiResponse } from '../../models/api-respuesta';
   ],
 })
 export class FileUploadComponent implements ControlValueAccessor {
-  files: File[] = []; // Array para almacenar los nombres de los archivos
+  files: any[] = []; // Array para almacenar los nombres de los archivos
   retos: { id: number; value: string }[] = [{ id: 0, value: '' }];
   nextId: number = 1;
 
@@ -48,21 +48,13 @@ export class FileUploadComponent implements ControlValueAccessor {
   onChange = (files: File[]) => {};
   onTouched = () => {};
 
-  constructor(private apiService: ApiService) {}
+  constructor() {}
 
-  writeValue(value: string[]): void {
+  writeValue(value: any[]): void {
     if (value && value.length > 0) {
-      this.apiService.getFiles(value).subscribe({
-        next: (data: Blob[]) => {
-          this.files = data.map((blob: Blob, index: number) => {
-            return new File([blob], value[index], { type: blob.type });
-          });
-          console.log('Files:', this.files);
-          this.onChange(this.files);
-        },
-        error: (err) => {
-          console.error('Error fetching files:', err);
-        },
+      this.files = value.map((file: File) => {
+        (file as any).objectURL = URL.createObjectURL(file);
+        return file;
       });
     }
   }
@@ -92,12 +84,14 @@ export class FileUploadComponent implements ControlValueAccessor {
   }
 
   onFileUpload(event: any): void {
-    const uploadedFiles = event.currentFiles;
-    this.files = [...this.files, ...uploadedFiles];
+    this.files = [...this.files, ...event.currentFiles];
+    console.log('Archivos inicializados:', this.files);
+
     this.onChange(this.files);
   }
 
   onFileRemove(fileName: string): void {
+    this.files = this.files.filter((file) => file.name !== fileName);
     this.onChange(this.files);
   }
 

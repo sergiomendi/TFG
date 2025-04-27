@@ -6,7 +6,7 @@ const path = require("path");
 
 const subirArchivo = async (req, res = response) => {
   const { id } = req.params;
-
+  const retos = req.body.retos ? JSON.parse(req.body.retos) : [];
   // Validar que se haya enviado un archivo
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).json({
@@ -28,7 +28,7 @@ const subirArchivo = async (req, res = response) => {
   const extension = nombrePartido[nombrePartido.length - 1];
 
   // Crear el path donde se guardará el archivo
-  const path = `${process.env.PATHUPLOAD || "uploads"}`;
+  const path = `${__dirname}/../${process.env.PATHUPLOAD}`;
   const nombreArchivo = `${uuidv4()}.${extension}`;
   const patharchivo = `${path}/${nombreArchivo}`;
 
@@ -36,7 +36,7 @@ const subirArchivo = async (req, res = response) => {
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, { recursive: true });
   }
-
+  console.log(fs.existsSync(path));
   // Mover el archivo al path especificado
   archivo.mv(patharchivo, async (err) => {
     if (err) {
@@ -48,40 +48,38 @@ const subirArchivo = async (req, res = response) => {
     }
 
     try {
-      // Actualizar el campo fotos en la base de datos (tipo JSON en MySQL)
-      const updateQuery = `
-        UPDATE escena
-        SET fotos = JSON_ARRAY_APPEND(COALESCE(fotos, '[]'), '$', ?)
-        WHERE id = ?
+      const insertQuery = `
+      INSERT INTO archivo (titulo, tipo, url, retos, id_escena)
+      VALUES (?, ?, ?, ?)
       `;
-      const updateValues = [nombreArchivo, id];
+      const insertValues = [archivo.name, extension, nombreArchivo, retos, id];
 
-      const [updateResult] = await db.query(updateQuery, updateValues);
+      const [insertResult] = await global.db.query(insertQuery, insertValues);
 
-      if (updateResult.affectedRows === 0) {
-        return res.status(404).json({
+      if (insertResult.affectedRows === 0) {
+        return res.status(500).json({
           ok: false,
-          msg: "No se encontró la escena con el ID proporcionado",
+          msg: "No se pudo insertar el archivo en la base de datos",
         });
       }
-
-      // Realizar una consulta adicional para obtener los datos actualizados
-      const selectQuery = `SELECT * FROM escena WHERE id = ?`;
-      const [rows] = await db.query(selectQuery, [id]);
 
       // Respuesta exitosa
       res.json({
         ok: true,
-        msg: "Archivo subido correctamente y escena actualizada",
-        nombreArchivo,
-        path: patharchivo,
-        escena: rows[0], // Devuelve la escena actualizada
+        msg: "Archivo subido correctamente y registrado en la base de datos",
+        archivo: {
+          id: insertResult.insertId,
+          titulo: archivo.name,
+          tipo: extension,
+          url: patharchivo,
+          id_escena: id,
+        },
       });
     } catch (dbError) {
       console.error(dbError);
       return res.status(500).json({
         ok: false,
-        msg: "Error al actualizar la base de datos",
+        msg: "Error al insertar el archivo en la base de datos",
       });
     }
   });
