@@ -20,6 +20,7 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.9.27",
         "mysql2": "^3.14.0",
+        "nodemon": "^3.1.9",
         "uuid": "^8.3.0",
         "validator": "^13.1.1"
     }
