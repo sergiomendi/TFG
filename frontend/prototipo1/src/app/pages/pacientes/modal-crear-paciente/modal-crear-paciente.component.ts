@@ -15,10 +15,10 @@ import {
   faTrash,
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
-import { TableColumn } from '../../components/table/mi-tabla.component';
-import { UnixToShortDatePipe } from '../../pipes/unix-to-short-date';
-import { ApiService } from '../../services/api.service';
-import { ApiResponse } from '../../models/api-respuesta';
+import { TableColumn } from '../../../components/table/mi-tabla.component';
+import { UnixToShortDatePipe } from '../../../pipes/unix-to-short-date';
+import { ApiService } from '../../../services/api.service';
+import { ApiResponse } from '../../../models/api-respuesta';
 
 @Component({
   selector: 'modal-crear-paciente-content',

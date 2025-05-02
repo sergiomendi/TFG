@@ -9,12 +9,12 @@ import {
 import { Router } from '@angular/router';
 import Marzipano from 'marzipano';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MiDialogComponent } from '../components/dialog/dialog.component';
+import { MiDialogComponent } from '../../components/dialog/dialog.component';
 import { MessageModule } from 'primeng/message';
 import { Dialog } from 'primeng/dialog';
 import { ButtonBarComponent } from './button-bar/button-bar.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'play',

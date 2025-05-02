@@ -21,17 +21,17 @@ import {
   FormsModule,
   Validators,
 } from '@angular/forms';
-import { MiDialogComponent } from '../components/dialog/dialog.component';
+import { MiDialogComponent } from '../../components/dialog/dialog.component';
 import { Dialog } from 'primeng/dialog';
-import { Paciente } from '../models/paciente';
+import { Paciente } from '../../models/paciente';
 import { ModalCrearPacienteComponent } from './modal-crear-paciente/modal-crear-paciente.component';
 import {
   MiTablaComponent,
   TableColumn,
-} from '../components/table/mi-tabla.component';
-import { ApiService } from '../services/api.service';
-import { ApiResponse } from '../models/api-respuesta';
-import { getCurrentDayUnix, unixToShortDate } from '../helpers/time';
+} from '../../components/table/mi-tabla.component';
+import { ApiService } from '../../services/api.service';
+import { ApiResponse } from '../../models/api-respuesta';
+import { getCurrentDayUnix, unixToShortDate } from '../../helpers/time';
 import { MessageService } from 'primeng/api';
 import { TextareaModule } from 'primeng/textarea';
 import { ModalDetallePacienteComponent } from './modal-detalle-paciente/modal-detalle-paciente.component';

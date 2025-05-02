@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
-import { FileUploadComponent } from '../../components/fileUpload/mi-file-upload.component';
+import { FileUploadComponent } from '../../../components/fileUpload/mi-file-upload.component';
 import { OnChanges, SimpleChanges } from '@angular/core';
-import { ApiService } from '../../services/api.service';
-import { ApiResponse } from '../../models/api-respuesta';
+import { ApiService } from '../../../services/api.service';
+import { ApiResponse } from '../../../models/api-respuesta';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UnixToShortDatePipe } from '../../pipes/unix-to-short-date';
+import { UnixToShortDatePipe } from '../../../pipes/unix-to-short-date';
 
 @Component({
   selector: 'modal-crear-escena-content',

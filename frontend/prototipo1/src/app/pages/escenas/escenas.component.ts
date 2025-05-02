@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
-import { Escena } from '../models/escena';
+import { Escena } from '../../models/escena';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faCirclePlay,
@@ -23,17 +23,17 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MiDialogComponent } from '../components/dialog/dialog.component';
-import { MiSelectComponent } from '../components/select/select.component';
+import { MiDialogComponent } from '../../components/dialog/dialog.component';
+import { MiSelectComponent } from '../../components/select/select.component';
 import { Dialog } from 'primeng/dialog';
 import { ModalCrearEscenaComponent } from './modal-crear-escena/modal-crear-escena.component';
 import {
   MiTablaComponent,
   TableColumn,
-} from '../components/table/mi-tabla.component';
-import { ApiService } from '../services/api.service';
-import { ApiResponse } from '../models/api-respuesta';
-import { getCurrentDayUnix, unixToShortDate } from '../helpers/time';
+} from '../../components/table/mi-tabla.component';
+import { ApiService } from '../../services/api.service';
+import { ApiResponse } from '../../models/api-respuesta';
+import { getCurrentDayUnix, unixToShortDate } from '../../helpers/time';
 import { MessageService } from 'primeng/api';
 
 @Component({

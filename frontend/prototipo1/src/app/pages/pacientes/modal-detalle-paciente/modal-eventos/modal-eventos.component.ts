@@ -1,9 +1,9 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
-import { ApiService } from '../../../services/api.service';
-import { ApiResponse } from '../../../models/api-respuesta';
-import { unixToShortDate } from '../../../helpers/time';
+import { ApiService } from '../../../../services/api.service';
+import { ApiResponse } from '../../../../models/api-respuesta';
+import { unixToShortDate } from '../../../../helpers/time';
 
 @Component({
   selector: 'modal-eventos',

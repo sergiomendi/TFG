@@ -2,15 +2,15 @@ import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
 import {
   MiTablaComponent,
   TableColumn,
-} from '../../components/table/mi-tabla.component';
+} from '../../../components/table/mi-tabla.component';
 import { faFaceSmile, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MiDialogComponent } from '../../components/dialog/dialog.component';
+import { MiDialogComponent } from '../../../components/dialog/dialog.component';
 import { Dialog } from 'primeng/dialog';
-import { RegistroExperiencia } from '../../models/registro-experiencia';
-import { ApiService } from '../../services/api.service';
-import { ApiResponse } from '../../models/api-respuesta';
-import { unixToShortDate } from '../../helpers/time';
+import { RegistroExperiencia } from '../../../models/registro-experiencia';
+import { ApiService } from '../../../services/api.service';
+import { ApiResponse } from '../../../models/api-respuesta';
+import { unixToShortDate } from '../../../helpers/time';
 import { ModalEventosComponent } from './modal-eventos/modal-eventos.component';
 
 @Component({

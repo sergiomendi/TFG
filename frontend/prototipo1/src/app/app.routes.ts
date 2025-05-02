@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { PacientesComponent } from './pacientes/pacientes.component';
-import { EscenasComponent } from './escenas/escenas.component';
-import { PlayComponent } from './play/play.component';
+import { PacientesComponent } from './pages/pacientes/pacientes.component';
+import { EscenasComponent } from './pages/escenas/escenas.component';
+import { PlayComponent } from './pages/play/play.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/escenas', pathMatch: 'full' },
