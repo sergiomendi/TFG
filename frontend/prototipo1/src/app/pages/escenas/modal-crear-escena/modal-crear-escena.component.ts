@@ -40,13 +40,10 @@ export class ModalCrearEscenaComponent implements OnChanges {
           this.apiService.getArchivosPorEscena(this.id || 0).subscribe({
             next: (archivos: File[]) => {
               // Actualizar el formulario con los archivos
-              this.formGroup.patchValue({
-                fotos: { files: archivos || [] },
-              });
-              console.log('Archivos cargados:', archivos);
-            },
-            error: (err) => {
-              console.error('Error al obtener los archivos:', err);
+              if (archivos.length > 0)
+                this.formGroup.patchValue({
+                  fotos: { files: archivos || [] },
+                });
             },
           });
           this.formGroup.patchValue({

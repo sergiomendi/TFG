@@ -15,6 +15,7 @@ import { Dialog } from 'primeng/dialog';
 import { ButtonBarComponent } from './button-bar/button-bar.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ApiService } from '../../services/api.service';
+import { getCurrentDayUnix } from '../../helpers/time';
 
 @Component({
   selector: 'play',
@@ -37,14 +38,26 @@ export class PlayComponent implements AfterViewInit {
   public title: string = 'Inicio';
   private isAnimating = false; // Flag para controlar la animación
   public isFullscreen = false;
+  idExperiencia: number = 0;
   ModalSalirVisible: boolean = false;
   isLoading: boolean = true; // Variable para controlar el indicador de carga
-
   images: string[] = [
     '/assets/blinds.jpg',
     '/assets/brown_photostudio_04.jpg',
     '/assets/myroom.jpg',
   ];
+
+  ngOnInit() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    this.idExperiencia = Number(id);
+    if (id) {
+      // this.apiService.getExperienciaImages(id).subscribe((data: string[]) => {
+      //   this.images = data;
+      //   this.loadScene(); // Cargar la escena después de obtener las imágenes
+      // });
+    }
+  }
   currentImageIndex: number = 0;
   viewer: any;
   scene: any;
@@ -154,7 +167,9 @@ export class PlayComponent implements AfterViewInit {
   }
 
   exit() {
-    // this.apiService.updateExperiencia()
+    this.apiService.updateExperiencia(this.idExperiencia, {
+      fechaFin: getCurrentDayUnix(),
+    });
     this.router.navigate(['/escenas']);
   }
 

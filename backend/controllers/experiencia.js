@@ -92,7 +92,7 @@ const crearExperiencia = async (req, res = response) => {
 
   try {
     // Insertar una nueva experiencia
-    const [result] = await global.db.query(
+    const [data] = await global.db.query(
       "INSERT INTO experiencia (duracion, fechaAlta, estresInicial, estresFinal, id_escena, id_paciente) VALUES (?, ?, ?, ?, ?, ?)",
       [duracion, fechaAlta, estresInicial, estresFinal, id_escena, id_paciente]
     );
@@ -100,8 +100,8 @@ const crearExperiencia = async (req, res = response) => {
     res.json({
       ok: true,
       msg: "Experiencia creada",
-      experiencia: {
-        id: result.insertId,
+      data: {
+        id: data.insertId,
         duracion,
         fechaAlta,
         estresInicial,
@@ -118,37 +118,61 @@ const crearExperiencia = async (req, res = response) => {
     });
   }
 };
-
-// Actualizar una experiencia existente
 const actualizarExperiencia = async (req, res = response) => {
   const id = req.params.id;
-  const {
-    titulo,
-    duracion,
-    fechaAlta,
-    estresInicial,
-    estresFinal,
-    id_escena,
-    id_paciente,
-  } = req.body;
+  const campos = req.body;
 
   try {
-    // Actualizar una experiencia existente
-    const [result] = await global.db.query(
-      "UPDATE experiencia SET titulo = ?, duracion = ?, fechaAlta = ?, estresInicial = ?, estresFinal = ?, id_escena = ?, id_paciente = ? WHERE id = ?",
-      [
-        titulo,
-        duracion,
-        fechaAlta,
-        estresInicial,
-        estresFinal,
-        id_escena,
-        id_paciente,
-        id,
-      ]
+    // Si se proporciona fechaFin, calcula la duración en minutos
+    if (campos.fechaFin) {
+      // Obtener la fechaAlta actual de la experiencia
+      const [result] = await global.db.query(
+        "SELECT fechaAlta FROM experiencia WHERE id = ?",
+        [id]
+      );
+
+      if (result.length === 0) {
+        return res.status(404).json({
+          ok: false,
+          msg: "La experiencia no existe",
+        });
+      }
+
+      const fechaAlta = result[0].fechaAlta;
+
+      // Verifica que fechaFin sea mayor que fechaAlta
+      if (campos.fechaFin <= fechaAlta) {
+        return res.status(400).json({
+          ok: false,
+          msg: "La fechaFin debe ser mayor que fechaAlta",
+        });
+      }
+
+      // Calcula la duración en minutos
+      campos.duracion = Math.floor((campos.fechaFin - fechaAlta) / 60);
+      console.log("Duración calculada:", campos.duracion);
+    }
+
+    // Construir la consulta dinámicamente
+    const camposActualizados = Object.keys(campos)
+      .map((campo) => `${campo} = ?`)
+      .join(", ");
+    const valores = Object.values(campos);
+
+    if (!camposActualizados) {
+      return res.status(400).json({
+        ok: false,
+        msg: "No se proporcionaron campos para actualizar",
+      });
+    }
+
+    // Actualizar la experiencia
+    const [updateResult] = await global.db.query(
+      `UPDATE experiencia SET ${camposActualizados} WHERE id = ?`,
+      [...valores, id]
     );
 
-    if (result.affectedRows === 0) {
+    if (updateResult.affectedRows === 0) {
       return res.status(404).json({
         ok: false,
         msg: "La experiencia no existe",
@@ -160,13 +184,7 @@ const actualizarExperiencia = async (req, res = response) => {
       msg: "Experiencia actualizada",
       experiencia: {
         id,
-        titulo,
-        duracion,
-        fechaAlta,
-        estresInicial,
-        estresFinal,
-        id_escena,
-        id_paciente,
+        ...campos,
       },
     });
   } catch (error) {

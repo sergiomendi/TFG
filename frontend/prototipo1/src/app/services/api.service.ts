@@ -21,13 +21,11 @@ export class ApiService {
   }
 
   createPaciente(paciente: any): Observable<any> {
-    console.log('Paciente:', paciente);
     const url = `${this.baseUrl}/api/paciente`;
     return this.http.post(url, paciente);
   }
 
   updatePaciente(id: number, paciente: any): Observable<any> {
-    console.log('Paciente:', paciente);
     const url = `${this.baseUrl}/api/paciente/${id}`;
     return this.http.put(url, paciente);
   }
@@ -68,6 +66,11 @@ export class ApiService {
   deleteEscena(id: number): Observable<any> {
     const url = `${this.baseUrl}/api/escena/${id}`;
     return this.http.delete(url);
+  }
+
+  getExperienciaById(id: number | null): Observable<any> {
+    const url = `${this.baseUrl}/api/experiencia/${id}`;
+    return this.http.get(url);
   }
 
   createExperiencia(experiencia: any): Observable<any> {
@@ -129,7 +132,6 @@ export class ApiService {
   }
 
   getArchivosPorEscena(idEscena: number): Observable<File[]> {
-    console.log('ID Escena:', idEscena);
     const url = `${this.baseUrl}/api/archivo/${idEscena}`;
 
     return this.http

@@ -58,9 +58,6 @@ import { MessageService } from 'primeng/api';
   templateUrl: './escenas.component.html',
 })
 export class EscenasComponent {
-  @ViewChild('dialogIniciar') dialogIniciar: Dialog | undefined;
-  @ViewChild('dialogCrear') dialogCrear: Dialog | undefined;
-  @ViewChild('dialogEliminar') dialogEliminar: Dialog | undefined;
   escenas!: Escena[];
   columns: TableColumn[] = [];
   faCirclePlay = faCirclePlay;
@@ -74,6 +71,7 @@ export class EscenasComponent {
   pacientes: string[] = [];
 
   selectedIdEscena: number | null = null;
+  createdExperienciaId: number | null = null;
 
   crearEscenaForm: FormGroup;
   iniciarEscenaForm: FormGroup;
@@ -138,7 +136,7 @@ export class EscenasComponent {
         .subscribe({
           next: () => {
             this.fetchEscenas();
-            if (this.dialogCrear) this.dialogCrear.visible = false;
+            this.ModalCrearExpVisible = false;
           },
         });
     } else {
@@ -153,14 +151,12 @@ export class EscenasComponent {
               this.apiService
                 .uploadFiles(formData, idEscenaCreada, data.retos)
                 .subscribe({
-                  next: (response: any) => {
-                    console.log('Archivo subido correctamente:', response);
-                  },
+                  next: (response: any) => {},
                 });
             });
           }
           this.fetchEscenas();
-          if (this.dialogCrear) this.dialogCrear.visible = false;
+          this.ModalCrearExpVisible = false;
           this.showToast('Elemento creado');
         },
       });
@@ -173,7 +169,7 @@ export class EscenasComponent {
         next: () => {
           this.selectedIdEscena = null;
           this.fetchEscenas();
-          if (this.dialogEliminar) this.dialogEliminar.visible = false;
+          this.ModalEliminarVisible = false;
           this.showToast('Elemento eliminado');
         },
       });
@@ -191,7 +187,12 @@ export class EscenasComponent {
         id_paciente: this.iniciarEscenaForm.value.idPaciente,
       };
       this.apiService.createExperiencia(experienciaData).subscribe({
-        next: () => this.fetchEscenas(),
+        next: (response: ApiResponse) => {
+          this.createdExperienciaId = response.data.id;
+          this.router.navigate(['/play'], {
+            queryParams: { id: this.createdExperienciaId },
+          });
+        },
       });
     }
   }
@@ -204,23 +205,21 @@ export class EscenasComponent {
     });
   }
 
-  redirectToPlay() {
-    this.router.navigate(['/play']);
+  showDialogCrearExp() {
+    this.crearEscenaForm.reset({
+      titulo: '',
+      fechaAlta: getCurrentDayUnix(),
+      descripcion: '',
+      fotos: [],
+    });
+    this.selectedIdEscena = null;
+    this.ModalCrearExpVisible = true;
   }
 
-  showDialogCrearExp() {
-    if (this.dialogCrear) {
-      this.dialogCrear.visible = true;
-    }
-  }
   showDialogIniciarExp() {
-    if (this.dialogIniciar) {
-      this.dialogIniciar.visible = true;
-    }
+    this.ModalIniciarExpVisible = true;
   }
   showDialogEliminarExp() {
-    if (this.dialogEliminar) {
-      this.dialogEliminar.visible = true;
-    }
+    this.ModalEliminarVisible = true;
   }
 }

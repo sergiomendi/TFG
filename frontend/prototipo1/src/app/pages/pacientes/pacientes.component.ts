@@ -154,6 +154,12 @@ export class PacientesComponent implements OnInit {
   }
 
   showDialogCrearExp() {
+    this.crearPacienteForm.reset({
+      nombre: '',
+      fechaAlta: getCurrentDayUnix(),
+      comentarios: '',
+    });
+    this.idSelectedPaciente = null;
     if (this.dialogCrear) {
       this.dialogCrear.visible = true;
     }

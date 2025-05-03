@@ -5,20 +5,12 @@ const path = require("path");
 // Obtener archivos por id_escena
 const obtenerArchivosPorIdEscena = async (req, res = response) => {
   const id_escena = req.params.id;
-  console.log("id_escena", id_escena);
   try {
     // Consulta para obtener archivos por id_escena
     const [data] = await global.db.query(
       "SELECT * FROM archivo WHERE id_escena = ?",
       [id_escena]
     );
-
-    if (data.length === 0) {
-      return res.status(404).json({
-        ok: false,
-        msg: "No se encontraron archivos para la escena especificada",
-      });
-    }
 
     // Leer los archivos desde la carpeta 'uploads'
     const archivosConContenido = data.map((archivo) => {

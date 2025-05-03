@@ -1,7 +1,8 @@
 <mi-dialog
   #dialogIniciar
   [header]="'Selecciona paciente'"
-  (save)="redirectToPlay(); crearExperiencia()"
+  [(visible)]="ModalIniciarExpVisible"
+  (save)="crearExperiencia()"
 >
   <form [formGroup]="iniciarEscenaForm">
     <mi-select formControlName="idPaciente" [options]="pacientes"></mi-select>
@@ -9,7 +10,7 @@
 </mi-dialog>
 <mi-dialog
   #dialogCrear
-  [visible]="ModalCrearExpVisible"
+  [(visible)]="ModalCrearExpVisible"
   [header]="selectedIdEscena ? 'Editar escena' : 'Crear escena'"
   [styleClass]="{ width: '60%', minHeight: '80%' }"
   (save)="onCreateSubmit()"
@@ -21,7 +22,7 @@
 </mi-dialog>
 <mi-dialog
   #dialogEliminar
-  [visible]="ModalEliminarVisible"
+  [(visible)]="ModalEliminarVisible"
   [header]="'Eliminar escena'"
   [onSaveProp]="eliminarEscena.bind(this)"
   [styleClass]="{ width: '20%', minHeight: '25%' }"

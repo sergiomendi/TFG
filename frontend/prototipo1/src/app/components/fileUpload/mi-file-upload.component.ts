@@ -85,8 +85,6 @@ export class FileUploadComponent implements ControlValueAccessor {
 
   onFileUpload(event: any): void {
     this.files = [...this.files, ...event.currentFiles];
-    console.log('Archivos inicializados:', this.files);
-
     this.onChange(this.files);
   }
 
