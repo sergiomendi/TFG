@@ -1,7 +1,0 @@
-{
-  "name": "captura360",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular-standalone"
-}
