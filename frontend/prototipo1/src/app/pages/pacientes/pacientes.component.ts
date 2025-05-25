@@ -7,6 +7,8 @@ import {
   faPenToSquare,
   faTrash,
   faPlus,
+  faFaceSmile,
+  faEye,
 } from '@fortawesome/free-solid-svg-icons';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -19,18 +21,20 @@ import {
   FormsModule,
   Validators,
 } from '@angular/forms';
-import { MiDialogComponent } from '../components/dialog/dialog.component';
+import { MiDialogComponent } from '../../components/dialog/dialog.component';
 import { Dialog } from 'primeng/dialog';
-import { Paciente } from '../models/paciente';
+import { Paciente } from '../../models/paciente';
 import { ModalCrearPacienteComponent } from './modal-crear-paciente/modal-crear-paciente.component';
 import {
   MiTablaComponent,
   TableColumn,
-} from '../components/table/mi-tabla.component';
-import { ApiService } from '../services/api.service'; // Import the ApiService
-import { ApiResponse } from '../models/api-respuesta';
-import { getCurrentDayUnix, unixToShortDate } from '../helpers/time';
+} from '../../components/table/mi-tabla.component';
+import { ApiService } from '../../services/api.service';
+import { ApiResponse } from '../../models/api-respuesta';
+import { getCurrentDayUnix, unixToShortDate } from '../../helpers/time';
 import { MessageService } from 'primeng/api';
+import { TextareaModule } from 'primeng/textarea';
+import { ModalDetallePacienteComponent } from './modal-detalle-paciente/modal-detalle-paciente.component';
 
 @Component({
   selector: 'app-pacientes',
@@ -39,6 +43,7 @@ import { MessageService } from 'primeng/api';
     TableModule,
     FormsModule,
     CommonModule,
+    TextareaModule,
     InputTextModule,
     IconFieldModule,
     InputIconModule,
@@ -48,10 +53,12 @@ import { MessageService } from 'primeng/api';
     MiDialogComponent,
     ModalCrearPacienteComponent,
     MiTablaComponent,
+    ModalDetallePacienteComponent,
   ],
   templateUrl: './pacientes.component.html',
 })
 export class PacientesComponent implements OnInit {
+  @ViewChild('dialogDetallePaciente') dialogDetallePaciente: Dialog | undefined;
   @ViewChild('dialogCrear') dialogCrear: Dialog | undefined;
   @ViewChild('dialogEliminar') dialogEliminar: Dialog | undefined;
   pacientes: Paciente[] = [];
@@ -61,8 +68,9 @@ export class PacientesComponent implements OnInit {
   faPenToSquare = faPenToSquare;
   faTrash = faTrash;
   faPlus = faPlus;
-  ModalCrearVisible: boolean = false;
-  ModalEliminarVisible: boolean = false;
+  faEye = faEye;
+  faFaceSmile = faFaceSmile;
+
   isModalEditar: boolean = false;
   crearPacienteForm: FormGroup;
 
@@ -72,9 +80,9 @@ export class PacientesComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.crearPacienteForm = this.fb.group({
-      nombre: ['', Validators.required], // Campo obligatorio
-      fechaAlta: [getCurrentDayUnix(), Validators.required], // Campo obligatorio
-      comentarios: ['', Validators.required], // Campo obligatorio
+      nombre: ['', Validators.required],
+      fechaAlta: [getCurrentDayUnix(), Validators.required],
+      comentarios: ['', Validators.required],
     });
   }
 
@@ -84,8 +92,9 @@ export class PacientesComponent implements OnInit {
     this.columns = [
       { field: 'nombre', header: 'Nombre' },
       { field: 'fechaAlta', header: 'Fecha de alta' },
-      { field: 'accion1', header: '', width: '5%' },
-      { field: 'accion2', header: '', width: '5%' },
+      { field: 'accion1', header: 'Experiencias', width: '25%' },
+      { field: 'accion2', header: '', width: '2%' },
+      { field: 'accion3', header: '', width: '2%' },
     ];
   }
 
@@ -107,7 +116,7 @@ export class PacientesComponent implements OnInit {
       this.apiService.deletePaciente(this.idSelectedPaciente).subscribe({
         next: () => {
           this.idSelectedPaciente = null;
-          this.ModalEliminarVisible = false;
+          if (this.dialogEliminar) this.dialogEliminar.visible = false;
           this.fetchPacientes();
           this.showToast('Elemento eliminado');
         },
@@ -125,20 +134,19 @@ export class PacientesComponent implements OnInit {
 
   onCreateSubmit(): void {
     if (this.isModalEditar) {
-      console.log('Datos enviados:', this.crearPacienteForm.value);
       this.apiService
         .updatePaciente(this.idSelectedPaciente!, this.crearPacienteForm.value)
         .subscribe({
           next: () => {
             this.fetchPacientes();
-            this.ModalCrearVisible = false;
+            if (this.dialogCrear) this.dialogCrear.visible = false;
           },
         });
     } else {
       this.apiService.createPaciente(this.crearPacienteForm.value).subscribe({
         next: () => {
           this.fetchPacientes();
-          this.ModalCrearVisible = false;
+          if (this.dialogCrear) this.dialogCrear.visible = false;
           this.showToast('Elemento creado');
         },
       });
@@ -146,6 +154,12 @@ export class PacientesComponent implements OnInit {
   }
 
   showDialogCrearExp() {
+    this.crearPacienteForm.reset({
+      nombre: '',
+      fechaAlta: getCurrentDayUnix(),
+      comentarios: '',
+    });
+    this.idSelectedPaciente = null;
     if (this.dialogCrear) {
       this.dialogCrear.visible = true;
     }
@@ -162,6 +176,13 @@ export class PacientesComponent implements OnInit {
     if (this.dialogEliminar) {
       this.idSelectedPaciente = id;
       this.dialogEliminar.visible = true;
+    }
+  }
+
+  showDialogDetallePaciente(id: number) {
+    if (this.dialogDetallePaciente) {
+      this.idSelectedPaciente = id;
+      this.dialogDetallePaciente.visible = true;
     }
   }
 }

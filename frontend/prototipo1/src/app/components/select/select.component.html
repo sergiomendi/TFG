@@ -1,7 +1,7 @@
-<p-select
-  #select
+<p-dropdown
   [options]="options"
-  [(ngModel)]="optionSelected"
-  placeholder="Selecciona un paciente"
+  [ngModel]="value"
+  (onChange)="onValueChange($event)"
+  [placeholder]="'Selecciona un paciente'"
   class="w-full"
-/>
+></p-dropdown>

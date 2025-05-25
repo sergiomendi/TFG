@@ -1,0 +1,35 @@
+<form class="flex flex-col gap-4" [formGroup]="formGroup">
+  <div class="flex gap-6">
+    <!-- Campo Nombre -->
+    <input
+      pInputText
+      name="name"
+      type="text"
+      formControlName="nombre"
+      placeholder="Nombre"
+      class="w-full"
+    />
+
+    <!-- Campo Fecha -->
+    <input
+      pInputText
+      name="date"
+      type="text"
+      [value]="formGroup.get('fechaAlta')?.value | unixToShortDate"
+      placeholder="Fecha"
+      class="w-1/4"
+      disabled
+    />
+  </div>
+
+  <!-- Campo Comentarios -->
+  <textarea
+    rows="5"
+    cols="30"
+    name="comments"
+    placeholder="Comentarios"
+    formControlName="comentarios"
+    pTextarea
+    class="w-full max-h-35"
+  ></textarea>
+</form>

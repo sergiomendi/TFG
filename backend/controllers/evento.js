@@ -1,4 +1,35 @@
 const { response } = require("express");
+// Obtener eventos por id_experiencia
+const obtenerEventosPorIdExperiencia = async (req, res = response) => {
+  const id_experiencia = req.params.id_experiencia;
+
+  try {
+    // Consulta para obtener eventos por id_experiencia
+    const [data] = await global.db.query(
+      "SELECT * FROM evento WHERE id_experiencia = ?",
+      [id_experiencia]
+    );
+
+    if (data.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No se encontraron eventos para la experiencia especificada",
+      });
+    }
+
+    res.json({
+      ok: true,
+      msg: "obtenerEventosPorIdExperiencia",
+      data,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error al obtener eventos por id_experiencia",
+    });
+  }
+};
 
 // Obtener eventos con paginación
 const obtenerEventos = async (req, res = response) => {
@@ -135,6 +166,7 @@ const borrarEvento = async (req, res = response) => {
 };
 
 module.exports = {
+  obtenerEventosPorIdExperiencia,
   obtenerEventos,
   crearEvento,
   actualizarEvento,

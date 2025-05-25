@@ -4,6 +4,7 @@ Ruta base: /api/experiencias
 
 const { Router } = require("express");
 const {
+  obtenerExperienciasPorIdPaciente,
   obtenerExperiencias,
   crearExperiencia,
   actualizarExperiencia,
@@ -14,6 +15,16 @@ const { validarCampos } = require("../middleware/validar-campos");
 const { validarJWT } = require("../middleware/validar-jwt");
 
 const router = Router();
+
+// Obtener experiencias por id de paciente
+router.get(
+  "/paciente/:id_paciente",
+  [
+    check("id_paciente", "El id del paciente debe ser un número").isNumeric(),
+    validarCampos,
+  ],
+  obtenerExperienciasPorIdPaciente
+);
 
 // Obtener experiencias
 router.get(
@@ -32,10 +43,6 @@ router.get(
 router.post(
   "/",
   [
-    check("titulo", "El argumento titulo es obligatorio")
-      .not()
-      .isEmpty()
-      .trim(),
     check(
       "duracion",
       "El argumento duracion es obligatorio y debe ser un número"
@@ -70,34 +77,27 @@ router.put(
   "/:id",
   [
     check("id", "El identificador no es válido").isNumeric(),
-    check("titulo", "El argumento titulo es obligatorio")
-      .not()
-      .isEmpty()
-      .trim(),
-    check(
-      "duracion",
-      "El argumento duracion es obligatorio y debe ser un número"
-    ).isNumeric(),
-    check(
-      "fechaAlta",
-      "El argumento fechaAlta es obligatorio y debe ser un número"
-    ).isNumeric(),
-    check(
-      "estresInicial",
-      "El argumento estresInicial es obligatorio y debe ser un número"
-    ).isNumeric(),
-    check(
-      "estresFinal",
-      "El argumento estresFinal es obligatorio y debe ser un número"
-    ).isNumeric(),
-    check(
-      "id_escena",
-      "El argumento id_escena es obligatorio y debe ser un número"
-    ).isNumeric(),
-    check(
-      "id_paciente",
-      "El argumento id_paciente es obligatorio y debe ser un número"
-    ).isNumeric(),
+    check("titulo", "El argumento titulo debe ser un texto")
+      .optional()
+      .isString(),
+    check("duracion", "El argumento duracion debe ser un número")
+      .optional()
+      .isNumeric(),
+    check("fechaAlta", "El argumento fechaAlta debe ser un número")
+      .optional()
+      .isNumeric(),
+    check("estresInicial", "El argumento estresInicial debe ser un número")
+      .optional()
+      .isNumeric(),
+    check("estresFinal", "El argumento estresFinal debe ser un número")
+      .optional()
+      .isNumeric(),
+    check("id_escena", "El argumento id_escena debe ser un número")
+      .optional()
+      .isNumeric(),
+    check("id_paciente", "El argumento id_paciente debe ser un número")
+      .optional()
+      .isNumeric(),
     validarCampos,
   ],
   actualizarExperiencia

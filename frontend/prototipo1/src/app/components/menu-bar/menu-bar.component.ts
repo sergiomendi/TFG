@@ -24,8 +24,10 @@ import { RouterLink } from '@angular/router';
 })
 export class MenuBarComponent implements OnInit {
   items: MenuItem[] | undefined;
-
+  isPacientesRoute: boolean = false;
   ngOnInit() {
+    const isPacientesRoute = window.location.pathname === '/pacientes';
+    if (isPacientesRoute) this.isPacientesRoute = true;
     this.items = [
       {
         label: 'Pacientes',
