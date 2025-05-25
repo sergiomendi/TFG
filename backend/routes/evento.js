@@ -4,6 +4,7 @@ Ruta base: /api/eventos
 
 const { Router } = require("express");
 const {
+  obtenerEventosPorIdExperiencia,
   obtenerEventos,
   crearEvento,
   actualizarEvento,
@@ -15,6 +16,18 @@ const { validarJWT } = require("../middleware/validar-jwt");
 
 const router = Router();
 
+// Obtener eventos por id_experiencia
+router.get(
+  "/experiencia/:id_experiencia",
+  [
+    check(
+      "id_experiencia",
+      "El id del paciente debe ser un número"
+    ).isNumeric(),
+    validarCampos,
+  ],
+  obtenerEventosPorIdExperiencia
+);
 // Obtener eventos
 router.get(
   "/",

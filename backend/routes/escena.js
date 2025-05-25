@@ -15,6 +15,15 @@ const { validarJWT } = require("../middleware/validar-jwt");
 
 const router = Router();
 
+router.get(
+  "/:id",
+  [
+    check("id", "El id de la escena debe ser válido").isNumeric(),
+    validarCampos,
+  ],
+  obtenerEscenas
+);
+
 // Obtener escenas
 router.get(
   "/",

@@ -1,0 +1,29 @@
+<form class="flex flex-col gap-6" [formGroup]="formGroup">
+  <div class="flex gap-6">
+    <input
+      pInputText
+      type="text"
+      [value]="formGroup.get('fechaAlta')?.value | unixToShortDate"
+      placeholder="Fecha"
+      class="w-1/4"
+      disabled
+    />
+    <input
+      pInputText
+      type="text"
+      placeholder="Titulo"
+      formControlName="titulo"
+      class="w-full"
+    />
+  </div>
+  <textarea
+    rows="5"
+    cols="30"
+    placeholder="Descripción"
+    formControlName="descripcion"
+    pTextarea
+    class="w-full"
+  ></textarea>
+
+  <mi-file-upload formControlName="fotos"></mi-file-upload>
+</form>

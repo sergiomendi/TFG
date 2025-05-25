@@ -5,7 +5,7 @@ const obtenerEscenas = async (req, res = response) => {
   const desde = Number(req.query.desde) || 0;
   const hasta = req.query.hasta || "";
   let registropp = Number(process.env.DOCSPERPAGE);
-  const id = req.query.id;
+  const id = req.params.id;
   const texto = req.query.texto;
   let textoBusqueda = "";
 
@@ -18,17 +18,17 @@ const obtenerEscenas = async (req, res = response) => {
   }
 
   try {
-    let escenas, total;
+    let data, total;
 
     if (id) {
       // Obtener una escena específica por ID
-      [escenas] = await global.db.query("SELECT * FROM escena WHERE id = ?", [
-        id,
-      ]);
-      total = escenas.length;
+      [data] = await global.db.query("SELECT * FROM escena WHERE id = ?", [id]);
+      if (data.length === 1) {
+        data = data[0]; // Retornar directamente el objeto si es una única tupla
+      }
     } else if (texto) {
       // Buscar escenas por texto
-      [escenas] = await global.db.query(
+      [data] = await global.db.query(
         "SELECT * FROM escena WHERE titulo LIKE ? LIMIT ?, ?",
         [textoBusqueda, desde, registropp]
       );
@@ -38,7 +38,7 @@ const obtenerEscenas = async (req, res = response) => {
       );
     } else {
       // Obtener todas las escenas con paginación
-      [escenas] = await global.db.query("SELECT * FROM escena LIMIT ?, ?", [
+      [data] = await global.db.query("SELECT * FROM escena LIMIT ?, ?", [
         desde,
         registropp,
       ]);
@@ -50,12 +50,8 @@ const obtenerEscenas = async (req, res = response) => {
     res.json({
       ok: true,
       msg: "obtenerEscenas",
-      escenas,
-      page: {
-        desde,
-        registropp,
-        total,
-      },
+      data,
+      page: id ? undefined : { desde, registropp, total },
     });
   } catch (error) {
     console.error(error);
@@ -68,22 +64,23 @@ const obtenerEscenas = async (req, res = response) => {
 
 // Crear una nueva escena
 const crearEscena = async (req, res = response) => {
-  const { titulo, fechaAlta } = req.body;
+  const { titulo, fechaAlta, descripcion } = req.body;
 
   try {
     // Insertar una nueva escena
     const [result] = await global.db.query(
-      "INSERT INTO escena (titulo, fechaAlta) VALUES (?, ?)",
-      [titulo, fechaAlta]
+      "INSERT INTO escena (titulo, fechaAlta, descripcion) VALUES (?, ?, ?)",
+      [titulo, fechaAlta, descripcion]
     );
 
     res.json({
       ok: true,
       msg: "Escena creada",
-      escena: {
+      data: {
         id: result.insertId,
         titulo,
         fechaAlta,
+        descripcion,
       },
     });
   } catch (error) {
@@ -98,13 +95,13 @@ const crearEscena = async (req, res = response) => {
 // Actualizar una escena existente
 const actualizarEscena = async (req, res = response) => {
   const id = req.params.id;
-  const { titulo, fechaAlta } = req.body;
+  const { titulo, fechaAlta, descripcion } = req.body;
 
   try {
     // Actualizar una escena existente
     const [result] = await global.db.query(
-      "UPDATE escena SET titulo = ?, fechaAlta = ? WHERE id = ?",
-      [titulo, fechaAlta, id]
+      "UPDATE escena SET titulo = ?, fechaAlta = ?, descripcion = ? WHERE id = ?",
+      [titulo, fechaAlta, descripcion, id]
     );
 
     if (result.affectedRows === 0) {

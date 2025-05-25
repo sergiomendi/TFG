@@ -1,38 +1,73 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, forwardRef, ViewChild } from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { BadgeModule } from 'primeng/badge';
-import { HttpClientModule } from '@angular/common/http'; // Importa HttpClientModule aquí
 import { InputText } from 'primeng/inputtext';
 import { Dialog } from 'primeng/dialog';
 import { MiDialogComponent } from '../dialog/dialog.component';
+import { ApiService } from '../../services/api.service';
+import { ApiResponse } from '../../models/api-respuesta';
 
 @Component({
   selector: 'mi-file-upload',
   templateUrl: './mi-file-upload.component.html',
   standalone: true,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FileUploadComponent),
+      multi: true,
+    },
+  ],
   imports: [
     FileUpload,
     ButtonModule,
     BadgeModule,
     InputText,
     CommonModule,
-    HttpClientModule,
     MiDialogComponent,
+    ReactiveFormsModule,
   ],
 })
-export class FileUploadComponent {
-  files = [];
-  retos: { id: number; value: string }[] = [{ id: 0, value: '' }]; // Lista para almacenar los valores de los campos de texto con índices
-  nextId: number = 1; // Variable para generar IDs únicos
+export class FileUploadComponent implements ControlValueAccessor {
+  files: any[] = []; // Array para almacenar los nombres de los archivos
+  retos: { id: number; value: string }[] = [{ id: 0, value: '' }];
+  nextId: number = 1;
 
   totalSize: number = 0;
-
   totalSizePercent: number = 0;
+
   @ViewChild('dialogRetos') dialogRetos: Dialog | undefined;
 
+  onChange = (files: File[]) => {};
+  onTouched = () => {};
+
   constructor() {}
+
+  writeValue(value: any[]): void {
+    if (value && value.length > 0) {
+      this.files = value.map((file: File) => {
+        (file as any).objectURL = URL.createObjectURL(file);
+        return file;
+      });
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {}
 
   showDialogRetos() {
     if (this.dialogRetos) {
@@ -41,60 +76,29 @@ export class FileUploadComponent {
   }
 
   addInput() {
-    this.retos.push({ id: this.nextId++, value: '' }); // Añadir un nuevo campo de texto con un ID único
+    this.retos.push({ id: this.nextId++, value: '' });
   }
 
   removeInput(id: number) {
-    this.retos = this.retos.filter((reto) => reto.id !== id); // Eliminar un campo de texto por ID
+    this.retos = this.retos.filter((reto) => reto.id !== id);
   }
 
-  choose(event: any, callback: any) {
-    callback();
+  onFileUpload(event: any): void {
+    this.files = [...this.files, ...event.currentFiles];
+    this.onChange(this.files);
   }
 
-  onRemoveTemplatingFile(
-    event: any,
-    file: any,
-    removeFileCallback: any,
-    index: any
-  ) {
-    removeFileCallback(event, index);
-    this.totalSize -= parseInt(this.formatSize(file.size));
-    this.totalSizePercent = this.totalSize / 10;
+  onFileRemove(fileName: string): void {
+    this.files = this.files.filter((file) => file.name !== fileName);
+    this.onChange(this.files);
   }
 
-  onClearTemplatingUpload(clear: any) {
-    clear();
-    this.totalSize = 0;
-    this.totalSizePercent = 0;
+  onClearFiles(): void {
+    this.files = [];
+    this.onChange(this.files);
   }
 
-  onTemplatedUpload() {}
-
-  onSelectedFiles(event: any) {
-    this.files = event.currentFiles;
-    this.files.forEach((file: File) => {
-      this.totalSize += parseInt(this.formatSize(file.size));
-    });
-    this.totalSizePercent = this.totalSize / 10;
-  }
-
-  uploadEvent(callback: any) {
-    callback();
-  }
-
-  formatSize(bytes: any) {
-    const k = 1024;
-    const dm = 3;
-    // const sizes = this.config.translation.fileSizeTypes;
-    // if (bytes === 0) {
-    //   return `0 ${sizes[0]}`;
-    // }
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
-
-    // return `${formattedSize} ${sizes[i]}`;
-    return '10';
+  choose(event: Event, chooseCallback: Function): void {
+    chooseCallback(event);
   }
 }

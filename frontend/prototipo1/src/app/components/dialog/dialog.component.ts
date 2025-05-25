@@ -22,6 +22,7 @@ import { ButtonModule } from 'primeng/button';
 export class MiDialogComponent {
   @Input() header: string = '';
   @Input() visible: boolean = false;
+  @Output() visibleChange = new EventEmitter<boolean>();
   @Input() styleClass: Dialog['style'] = '';
   @Input() onSaveProp: () => void = () => {};
   @Output() save = new EventEmitter<void>();
@@ -33,6 +34,6 @@ export class MiDialogComponent {
   constructor() {}
 
   handleHide() {
-    this.visible = false;
+    this.visibleChange.emit(false);
   }
 }

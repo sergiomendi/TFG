@@ -4,3 +4,7 @@ export function unixToShortDate(unixTimestamp: number): string {
 export function getCurrentDayUnix(): number {
   return Math.floor(Date.now() / 1000);
 }
+
+export function getCurrentDayString(): string {
+  return new Date().toLocaleDateString();
+}

@@ -6,7 +6,10 @@
     <ng-template #item let-item let-root="root">
       <a
         pRipple
-        class="flex items-center p-menubar-item-link"
+        [ngClass]="[
+          'flex items-center p-menubar-item-link',
+          isPacientesRoute ? 'p-focus' : ''
+        ]"
         [routerLink]="item.routerLink"
       >
         <span>{{ item.label }}</span>
