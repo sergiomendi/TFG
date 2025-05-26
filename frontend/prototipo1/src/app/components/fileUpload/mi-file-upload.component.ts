@@ -11,8 +11,6 @@ import { BadgeModule } from 'primeng/badge';
 import { InputText } from 'primeng/inputtext';
 import { Dialog } from 'primeng/dialog';
 import { MiDialogComponent } from '../dialog/dialog.component';
-import { ApiService } from '../../services/api.service';
-import { ApiResponse } from '../../models/api-respuesta';
 
 @Component({
   selector: 'mi-file-upload',
@@ -36,8 +34,9 @@ import { ApiResponse } from '../../models/api-respuesta';
   ],
 })
 export class FileUploadComponent implements ControlValueAccessor {
+  @ViewChild('fileUpload') fileUpload: FileUpload | undefined;
   files: any[] = []; // Array para almacenar los nombres de los archivos
-  retos: { id: number; value: string }[] = [{ id: 0, value: '' }];
+  retos: { id: number; value: string }[] = [];
   nextId: number = 1;
 
   totalSize: number = 0;
@@ -45,29 +44,31 @@ export class FileUploadComponent implements ControlValueAccessor {
 
   @ViewChild('dialogRetos') dialogRetos: Dialog | undefined;
 
-  onChange = (files: File[]) => {};
   onTouched = () => {};
-
+  onChange = (_files: File[]) => {};
   constructor() {}
 
   writeValue(value: any[]): void {
-    if (value && value.length > 0) {
-      this.files = value.map((file: File) => {
-        (file as any).objectURL = URL.createObjectURL(file);
-        return file;
-      });
+    console.log('writeValue', value);
+    if (Array.isArray(value) && value.length > 0) {
+      this.files = value.map((file: any) => ({
+        file: file.file,
+        retos: file.retos,
+        objectURL:
+          (file.file as any).objectURL || URL.createObjectURL(file.file),
+      }));
     }
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
   }
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {}
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  setDisabledState?(_isDisabled: boolean): void {}
 
   showDialogRetos() {
     if (this.dialogRetos) {
@@ -84,15 +85,25 @@ export class FileUploadComponent implements ControlValueAccessor {
   }
 
   onFileUpload(event: any): void {
-    this.files = [...this.files, ...event.currentFiles];
+    const existingNames = new Set(this.files.map((f) => f.file.name));
+    const newFiles = event.currentFiles
+      .filter((file: File) => !existingNames.has(file.name))
+      .map((file: File) => ({
+        file,
+        retos: [...this.retos],
+        objectURL: URL.createObjectURL(file),
+      }));
+    this.files = [...this.files, ...newFiles];
     this.onChange(this.files);
   }
 
-  onFileRemove(fileName: string): void {
-    this.files = this.files.filter((file) => file.name !== fileName);
+  onFileRemove(file: File, removeFileCallback: Function): void {
+    this.files = this.files.filter((f) => f.name !== file.name);
     this.onChange(this.files);
+    if (removeFileCallback) {
+      removeFileCallback(file); // Esto elimina el archivo del buffer interno de PrimeNG
+    }
   }
-
   onClearFiles(): void {
     this.files = [];
     this.onChange(this.files);

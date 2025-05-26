@@ -34,16 +34,22 @@ export class ModalCrearEscenaComponent implements OnChanges {
   }
 
   private fetchEscenaData(): void {
+    this.formGroup.patchValue({
+      titulo: '',
+      fechaAlta: null,
+      descripcion: '',
+      fotos: [],
+    });
     this.apiService.getEscenaById(this.id).subscribe({
       next: (response: ApiResponse) => {
         if (response.ok) {
           this.apiService.getArchivosPorEscena(this.id || 0).subscribe({
-            next: (archivos: File[]) => {
-              // Actualizar el formulario con los archivos
-              if (archivos.length > 0)
+            next: (archivos: any) => {
+              if (archivos.length > 0) {
                 this.formGroup.patchValue({
-                  fotos: { files: archivos || [] },
+                  fotos: archivos,
                 });
+              }
             },
           });
           this.formGroup.patchValue({

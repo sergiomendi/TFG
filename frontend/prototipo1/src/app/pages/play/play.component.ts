@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import {
   Component,
   AfterViewInit,
@@ -24,6 +24,7 @@ import { getCurrentDayUnix } from '../../helpers/time';
   imports: [
     CheckboxModule,
     NgIf,
+    NgFor,
     MiDialogComponent,
     MessageModule,
     ButtonBarComponent,
@@ -41,21 +42,22 @@ export class PlayComponent implements AfterViewInit {
   idExperiencia: number = 0;
   ModalSalirVisible: boolean = false;
   isLoading: boolean = true; // Variable para controlar el indicador de carga
-  images: string[] = [
-    '/assets/blinds.jpg',
-    '/assets/brown_photostudio_04.jpg',
-    '/assets/myroom.jpg',
-  ];
+  images: any[] = [];
 
   ngOnInit() {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    this.idExperiencia = Number(id);
-    if (id) {
-      // this.apiService.getExperienciaImages(id).subscribe((data: string[]) => {
-      //   this.images = data;
-      //   this.loadScene(); // Cargar la escena después de obtener las imágenes
-      // });
+    const idEscena = urlParams.get('idEscena');
+    const idExperiencia = urlParams.get('idExperiencia');
+    this.idExperiencia = Number(idExperiencia);
+    if (idEscena) {
+      this.apiService
+        .getArchivosPorEscena(Number(idEscena))
+        .subscribe((files: any) => {
+          this.images = files.map((file: any, index: number) => ({
+            url: URL.createObjectURL(file.file),
+            retos: file.retos,
+          }));
+        });
     }
   }
   currentImageIndex: number = 0;
@@ -71,7 +73,6 @@ export class PlayComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.loadScene();
   }
-
   loadScene() {
     // Mostrar el indicador de carga
     this.isLoading = true;
@@ -83,7 +84,7 @@ export class PlayComponent implements AfterViewInit {
 
     // Create a source
     const source = Marzipano.ImageUrlSource.fromString(
-      this.images[this.currentImageIndex]
+      this.images[this.currentImageIndex].url
     );
 
     // Create a geometry
@@ -131,6 +132,7 @@ export class PlayComponent implements AfterViewInit {
       this.isLoading = false;
       this.cdr.detectChanges(); // Detectar cambios manualmente para evitar el error ExpressionChangedAfterItHasBeenCheckedError
     };
+    this.isLoading = false;
   }
 
   onChangeImage(direction: string) {

@@ -88,7 +88,7 @@ export class EscenasComponent {
       titulo: ['', Validators.required],
       fechaAlta: [getCurrentDayUnix(), Validators.required],
       descripcion: '',
-      fotos: this.fb.array([], Validators.required), // Array of objects
+      fotos: [[], Validators.required],
     });
     this.iniciarEscenaForm = this.fb.group({
       idPaciente: ['', Validators.required],
@@ -144,15 +144,22 @@ export class EscenasComponent {
         next: (response: ApiResponse) => {
           let idEscenaCreada = response.data.id || 0;
 
-          if (this.crearEscenaForm.value.fotos) {
+          if (
+            this.crearEscenaForm.value.fotos &&
+            this.crearEscenaForm.value.fotos.length > 0
+          ) {
             this.crearEscenaForm.value.fotos.forEach((data: any) => {
               const formData = new FormData();
               formData.append('archivo', data.file);
-              this.apiService
-                .uploadFiles(formData, idEscenaCreada, data.retos)
-                .subscribe({
-                  next: (response: any) => {},
-                });
+              if (data.retos) {
+                formData.append('retos', JSON.stringify(data.retos));
+              }
+              console.log(data);
+              this.apiService.uploadFiles(formData, idEscenaCreada).subscribe({
+                next: (response: any) => {
+                  console.log('Archivo subido correctamente:', response);
+                },
+              });
             });
           }
           this.fetchEscenas();
@@ -190,7 +197,10 @@ export class EscenasComponent {
         next: (response: ApiResponse) => {
           this.createdExperienciaId = response.data.id;
           this.router.navigate(['/play'], {
-            queryParams: { id: this.createdExperienciaId },
+            queryParams: {
+              idEscena: this.selectedIdEscena,
+              idExperiencia: this.createdExperienciaId,
+            },
           });
         },
       });
