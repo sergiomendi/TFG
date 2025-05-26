@@ -1,14 +1,17 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-button-bar',
   standalone: true,
   templateUrl: './button-bar.component.html',
-  imports: [NgFor, ButtonModule],
+  imports: [NgIf, NgFor, ButtonModule],
 })
 export class ButtonBarComponent {
+  @Input() hideNextArrow: boolean = false;
+  @Input() hidePreviousArrow: boolean = false;
+  @Input() nivelActual: number = 1;
   levels: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   selectedLevel: number | null = null;
 

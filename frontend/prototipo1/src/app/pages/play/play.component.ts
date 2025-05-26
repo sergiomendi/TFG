@@ -39,6 +39,9 @@ export class PlayComponent implements AfterViewInit {
   public title: string = 'Inicio';
   private isAnimating = false; // Flag para controlar la animación
   public isFullscreen = false;
+  // Variables para controlar la visibilidad de las flechas
+  public hideNextArrow: boolean = false;
+  public hidePrevArrow: boolean = false;
   idExperiencia: number = 0;
   ModalSalirVisible: boolean = false;
   isLoading: boolean = true; // Variable para controlar el indicador de carga
@@ -72,6 +75,9 @@ export class PlayComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.loadScene();
+    // Actualizar visibilidad de flechas
+    this.hidePrevArrow = this.currentImageIndex === 0;
+    this.hideNextArrow = this.currentImageIndex === this.images.length - 1;
   }
   loadScene() {
     // Mostrar el indicador de carga
@@ -147,6 +153,10 @@ export class PlayComponent implements AfterViewInit {
       // No cambiar la imagen si se alcanza el tope
       return;
     }
+
+    // Actualizar visibilidad de flechas
+    this.hidePrevArrow = this.currentImageIndex === 0;
+    this.hideNextArrow = this.currentImageIndex === this.images.length - 1;
 
     // Cargar la nueva escena
     this.loadScene();
