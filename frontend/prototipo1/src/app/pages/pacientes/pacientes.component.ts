@@ -61,6 +61,7 @@ export class PacientesComponent implements OnInit {
   @ViewChild('dialogDetallePaciente') dialogDetallePaciente: Dialog | undefined;
   @ViewChild('dialogCrear') dialogCrear: Dialog | undefined;
   @ViewChild('dialogEliminar') dialogEliminar: Dialog | undefined;
+  ModalEliminarVisible: boolean = false;
   pacientes: Paciente[] = [];
   columns: TableColumn[] = [];
   idSelectedPaciente: number | null = null;
@@ -117,6 +118,7 @@ export class PacientesComponent implements OnInit {
         next: () => {
           this.idSelectedPaciente = null;
           if (this.dialogEliminar) this.dialogEliminar.visible = false;
+          this.ModalEliminarVisible = false;
           this.fetchPacientes();
           this.showToast('Elemento eliminado');
         },
@@ -176,6 +178,7 @@ export class PacientesComponent implements OnInit {
     if (this.dialogEliminar) {
       this.idSelectedPaciente = id;
       this.dialogEliminar.visible = true;
+      this.ModalEliminarVisible = true;
     }
   }
 

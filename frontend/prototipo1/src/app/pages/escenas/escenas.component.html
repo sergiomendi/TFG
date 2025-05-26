@@ -16,6 +16,7 @@
   (save)="onCreateSubmit()"
 >
   <modal-crear-escena-content
+    *ngIf="ModalCrearExpVisible"
     [id]="selectedIdEscena"
     [formGroup]="crearEscenaForm"
   ></modal-crear-escena-content>
@@ -31,8 +32,9 @@
     severity="warn"
     class="flex mt-0.5 h-full"
     icon="pi pi-exclamation-triangle"
-    text="¿Está seguro de que desea eliminar?"
-  />
+    *ngIf="ModalEliminarVisible"
+    >¿Está seguro de que desea eliminar?</p-message
+  >
 </mi-dialog>
 <div class="flex items-center justify-center h-full">
   <mi-tabla [columns]="columns" [data]="escenas" [filterBy]="'titulo'">

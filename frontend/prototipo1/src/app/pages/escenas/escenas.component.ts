@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
@@ -15,7 +15,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { MessageModule } from 'primeng/message';
+import { Message, MessageModule } from 'primeng/message';
 import {
   FormBuilder,
   FormGroup,
@@ -40,6 +40,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-escenas',
   standalone: true,
   imports: [
+    NgIf,
     TableModule,
     FormsModule,
     ReactiveFormsModule,

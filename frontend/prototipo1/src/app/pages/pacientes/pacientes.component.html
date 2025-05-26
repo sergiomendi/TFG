@@ -12,6 +12,7 @@
 </mi-dialog>
 <mi-dialog
   #dialogEliminar
+  [(visible)]="ModalEliminarVisible"
   [onSaveProp]="this.eliminarPaciente.bind(this)"
   [header]="'Eliminar escena'"
   [styleClass]="{ width: '20%', minHeight: '25%' }"
@@ -20,8 +21,9 @@
     severity="warn"
     class="flex mt-0.5 h-full"
     icon="pi pi-exclamation-triangle"
-    text="¿Está seguro de que desea eliminar?"
-  />
+    *ngIf="ModalEliminarVisible"
+    >¿Está seguro de que desea eliminar?</p-message
+  >
 </mi-dialog>
 
 <mi-dialog
