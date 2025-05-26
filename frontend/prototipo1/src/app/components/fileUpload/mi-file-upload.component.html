@@ -27,6 +27,7 @@
 </mi-dialog>
 
 <p-fileupload
+  id="fileUpload"
   name="fotos"
   [multiple]="true"
   accept="image/*"
@@ -87,7 +88,7 @@
                 pInputText
                 type="text"
                 placeholder="Titulo"
-                [defaultValue]="file.name"
+                [defaultValue]="file.file.name"
                 class="font-semibold text-ellipsis max-w-40 whitespace-nowrap overflow-hidden"
               />
 
@@ -99,7 +100,7 @@
               ></button>
               <p-button
                 icon="pi pi-times"
-                (click)="onFileRemove(file.name)"
+                (click)="onFileRemove(file, removeFileCallback)"
                 [outlined]="true"
                 [rounded]="true"
                 severity="danger"

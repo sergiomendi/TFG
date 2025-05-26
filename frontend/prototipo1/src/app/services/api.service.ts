@@ -83,17 +83,10 @@ export class ApiService {
     return this.http.put(url, experiencia);
   }
 
-  uploadFiles(
-    formData: FormData,
-    id: number,
-    retos: string[]
-  ): Observable<any> {
+  uploadFiles(formData: FormData, id: number): Observable<any> {
     const url = `${this.baseUrl}/api/upload/${id}`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    formData.append('retos', JSON.stringify(retos));
-    return this.http.post(url, formData, { headers });
+    // No pongas Content-Type, Angular lo gestiona
+    return this.http.post(url, formData);
   }
 
   getFiles(files: string[]): Observable<File[]> {
@@ -131,31 +124,35 @@ export class ApiService {
       );
   }
 
-  getArchivosPorEscena(idEscena: number): Observable<File[]> {
+  getArchivosPorEscena(idEscena: number): Observable<any[]> {
     const url = `${this.baseUrl}/api/archivo/${idEscena}`;
 
     return this.http
       .get<{
         ok: boolean;
         msg: string;
-        data: { fileContent: string; titulo: string; tipo: string }[];
+        data: {
+          fileContent: string;
+          titulo: string;
+          tipo: string;
+          retos: string[];
+        }[];
       }>(url)
       .pipe(
         map((response) => {
           if (response.ok && response.data) {
             return response.data.map((file) => {
-              // Decodificar el contenido base64 y convertirlo en un Blob
               const byteCharacters = atob(file.fileContent);
               const byteNumbers = new Array(byteCharacters.length);
               for (let i = 0; i < byteCharacters.length; i++) {
                 byteNumbers[i] = byteCharacters.charCodeAt(i);
               }
               const byteArray = new Uint8Array(byteNumbers);
-
-              // Crear un objeto File con el nombre y tipo correctos
-              return new File([byteArray], file.titulo, {
-                type: `image/${file.tipo}`, // Ajustar el tipo MIME según el campo 'tipo'
+              const fileObj = new File([byteArray], file.titulo, {
+                type: `image/${file.tipo}`,
               });
+              // Devuelve retos como array
+              return { file: fileObj, retos: file.retos };
             });
           }
           return [];

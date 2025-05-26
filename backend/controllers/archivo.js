@@ -12,22 +12,31 @@ const obtenerArchivosPorIdEscena = async (req, res = response) => {
       [id_escena]
     );
 
-    // Leer los archivos desde la carpeta 'uploads'
+    // Procesar los retos y leer los archivos desde la carpeta 'uploads'
     const archivosConContenido = data.map((archivo) => {
       const filePath = path.join(__dirname, "../uploads", archivo.url);
 
+      // Parsear retos si existen
+      let retos = null;
+      if (archivo.retos) {
+        try {
+          retos = JSON.parse(archivo.retos);
+        } catch (e) {
+          retos = archivo.retos; // Si no es JSON válido, dejar el valor original
+        }
+      }
+
+      let fileContent = null;
       if (fs.existsSync(filePath)) {
         const fileBuffer = fs.readFileSync(filePath);
-        return {
-          ...archivo,
-          fileContent: fileBuffer.toString("base64"), // Convertir a base64
-        };
-      } else {
-        return {
-          ...archivo,
-          fileContent: null, // Si el archivo no existe
-        };
+        fileContent = fileBuffer.toString("base64");
       }
+
+      return {
+        ...archivo,
+        retos,
+        fileContent,
+      };
     });
 
     res.json({

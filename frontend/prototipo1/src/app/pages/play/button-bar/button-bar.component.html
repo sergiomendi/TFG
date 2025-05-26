@@ -1,38 +1,44 @@
 <div
   style="
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background-color: rgba(240, 240, 240, 0.5); /* Color con transparencia */
+    background-color: rgba(240, 240, 240, 0.596); /* Color con transparencia */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   "
 >
-  <button
-    pButton
-    icon="pi pi-arrow-left"
-    [rounded]="true"
-    [outlined]="true"
-    (click)="previousImage()"
-  ></button>
-  <div *ngFor="let level of levels; let i = index" style="text-align: center">
+  <p>Nivel {{ nivelActual }}</p>
+  <div style="display: flex; gap: 20px">
     <button
       pButton
-      [label]="level.toString()"
-      [style.backgroundColor]="getColor(i)"
-      [style.borderColor]="selectedLevel === level ? 'yellow' : getColor(i)"
-      [style.color]="'white'"
-      [style.borderWidth]="selectedLevel === level ? '2px' : '1px'"
-      (click)="selectLevel(level)"
+      icon="pi pi-arrow-left"
+      [rounded]="true"
+      [outlined]="true"
+      *ngIf="!hidePreviousArrow"
+      (click)="previousImage()"
+    ></button>
+    <div *ngFor="let level of levels; let i = index" style="text-align: center">
+      <button
+        pButton
+        [label]="level.toString()"
+        [style.backgroundColor]="getColor(i)"
+        [style.borderColor]="selectedLevel === level ? 'yellow' : getColor(i)"
+        [style.color]="'white'"
+        [style.borderWidth]="selectedLevel === level ? '2px' : '1px'"
+        (click)="selectLevel(level)"
+      ></button>
+    </div>
+    <button
+      pButton
+      *ngIf="!hideNextArrow"
+      icon="pi pi-arrow-right"
+      [rounded]="true"
+      [outlined]="true"
+      (click)="nextImage()"
     ></button>
   </div>
-  <button
-    pButton
-    icon="pi pi-arrow-right"
-    [rounded]="true"
-    [outlined]="true"
-    (click)="nextImage()"
-  ></button>
 </div>

@@ -30,7 +30,12 @@
   <div
     style="position: absolute; top: 2%; left: 50%; transform: translateX(-50%)"
   >
-    <app-button-bar (changeImage)="onChangeImage($event)"></app-button-bar>
+    <app-button-bar
+      (changeImage)="onChangeImage($event)"
+      [hideNextArrow]="hideNextArrow"
+      [hidePreviousArrow]="hidePrevArrow"
+      [nivelActual]="currentImageIndex + 1"
+    ></app-button-bar>
   </div>
   <div
     style="
@@ -41,28 +46,18 @@
       color: white;
       padding: 10px;
       font-size: 1.3em;
+      min-width: 200px;
     "
+    *ngIf="this.images[this.currentImageIndex].retos.length > 0"
   >
+    <div style="font-weight: bold; margin-bottom: 8px">Tareas</div>
     <ul>
-      <li class="flex items-center gap-2">
+      <li
+        *ngFor="let tarea of this.images[this.currentImageIndex].retos || []"
+        class="flex items-center gap-2"
+      >
         <p-checkbox class="flex" [binary]="true" />
-        <p>Localiza la manzana en la mesa</p>
-      </li>
-      <li class="flex items-center gap-2">
-        <p-checkbox class="flex" [binary]="true" /> Busca el plátano en el
-        frutero
-      </li>
-      <li class="flex items-center gap-2">
-        <p-checkbox class="flex" [binary]="true" /> Identifica la botella de
-        leche en la nevera
-      </li>
-      <li class="flex items-center gap-2">
-        <p-checkbox class="flex" [binary]="true" /> Descubre el pan en la
-        despensa
-      </li>
-      <li class="flex items-center gap-2">
-        <p-checkbox class="flex" [binary]="true" /> Observa las zanahorias en el
-        cajón de verduras
+        <span>{{ tarea }}</span>
       </li>
     </ul>
   </div>
@@ -89,5 +84,4 @@
       (click)="toogleFullScreen()"
     ></i>
   </div>
-  <div></div>
 </div>

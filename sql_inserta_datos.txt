@@ -1,0 +1,38 @@
+START TRANSACTION;
+
+-- Insertar pacientes simulados
+INSERT INTO paciente (id, nombre, comentarios, fechaAlta) VALUES
+(1, 'Laura Martínez', 'Paciente con TCA leve, en fase inicial de tratamiento', UNIX_TIMESTAMP() - 86400),
+(2, 'Carlos Pérez', 'Paciente con historial de ansiedad social', UNIX_TIMESTAMP() - 72000),
+(3, 'Ana Torres', 'Paciente en proceso de reintegración alimentaria', UNIX_TIMESTAMP() - 60000);
+
+-- Insertar escenas
+INSERT INTO escena (id, titulo, descripcion, fechaAlta) VALUES
+(1, 'Comedor de instituto', 'Simulación de una hora de almuerzo escolar', UNIX_TIMESTAMP() - 100000),
+(2, 'Cocina hogareña', 'Espacio íntimo con mesa servida', UNIX_TIMESTAMP() - 80000),
+(3, 'Buffet de hotel', 'Entorno concurrido con comida variada', UNIX_TIMESTAMP() - 70000);
+
+-- Insertar archivos con retos por imagen
+INSERT INTO archivo (id, titulo, tipo, url, retos, id_escena) VALUES
+(1, 'comedor_escuela.jpg', 'jpg', 'comedor_escuela.jpg', '["Identifica los alimentos que más te incomodan", "Evalúa tu nivel de hambre real"]', 1),
+(2, 'cocina_familiar.jpg', 'jpg', 'cocina_familiar.jpg', '["Elige un plato que te gustaría probar", "Describe cómo te sientes en este ambiente"]', 2),
+(3, 'buffet_variedad.jpg', 'jpg', 'buffet_variedad.jpg', '["Selecciona solo lo que necesitas comer", "Identifica señales de saciedad"]', 3);
+
+-- Insertar experiencias
+INSERT INTO experiencia (id, duracion, fechaAlta, fechaFin, estresInicial, estresFinal, id_escena, id_paciente) VALUES
+(1, 900, UNIX_TIMESTAMP() - 3600, UNIX_TIMESTAMP() - 2700, 6, 4, 1, 1),
+(2, 600, UNIX_TIMESTAMP() - 5400, UNIX_TIMESTAMP() - 4800, 7, 5, 2, 2),
+(3, 800, UNIX_TIMESTAMP() - 7200, UNIX_TIMESTAMP() - 6400, 8, 6, 3, 3);
+
+-- Insertar eventos por experiencia
+INSERT INTO evento (id, fecha, tipo, id_experiencia) VALUES
+(1, UNIX_TIMESTAMP() - 3550, 1, 1),
+(2, UNIX_TIMESTAMP() - 3500, 2, 1),
+(3, UNIX_TIMESTAMP() - 3400, 3, 1),
+(4, UNIX_TIMESTAMP() - 5300, 1, 2),
+(5, UNIX_TIMESTAMP() - 5250, 2, 2),
+(6, UNIX_TIMESTAMP() - 5150, 3, 2),
+(7, UNIX_TIMESTAMP() - 7100, 1, 3),
+(8, UNIX_TIMESTAMP() - 7000, 2, 3);
+
+COMMIT;

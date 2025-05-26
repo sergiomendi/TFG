@@ -6,7 +6,17 @@ const path = require("path");
 
 const subirArchivo = async (req, res = response) => {
   const { id } = req.params;
-  const retos = req.body.retos ? JSON.parse(req.body.retos) : [];
+  // Si req.body.retos viene como string, parsea, si no, usa array vacío
+  let retos = [];
+  try {
+    retos = req.body.retos ? JSON.parse(req.body.retos) : [];
+  } catch (e) {
+    return res.status(400).json({
+      ok: false,
+      msg: "El campo 'retos' debe ser un array válido o un string JSON",
+    });
+  }
+
   // Validar que se haya enviado un archivo
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).json({
@@ -28,15 +38,19 @@ const subirArchivo = async (req, res = response) => {
   const extension = nombrePartido[nombrePartido.length - 1];
 
   // Crear el path donde se guardará el archivo
-  const path = `${__dirname}/../${process.env.PATHUPLOAD}`;
+  const uploadPath = path.join(
+    __dirname,
+    "../",
+    process.env.PATHUPLOAD || "uploads"
+  );
   const nombreArchivo = `${uuidv4()}.${extension}`;
-  const patharchivo = `${path}/${nombreArchivo}`;
+  const patharchivo = path.join(uploadPath, nombreArchivo);
 
   // Crear la carpeta si no existe
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path, { recursive: true });
+  if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
   }
-  console.log(fs.existsSync(path));
+
   // Mover el archivo al path especificado
   archivo.mv(patharchivo, async (err) => {
     if (err) {
@@ -49,10 +63,16 @@ const subirArchivo = async (req, res = response) => {
 
     try {
       const insertQuery = `
-      INSERT INTO archivo (titulo, tipo, url, retos, id_escena)
-      VALUES (?, ?, ?, ?)
+        INSERT INTO archivo (titulo, tipo, url, retos, id_escena)
+        VALUES (?, ?, ?, ?, ?)
       `;
-      const insertValues = [archivo.name, extension, nombreArchivo, retos, id];
+      const insertValues = [
+        archivo.name,
+        extension,
+        nombreArchivo,
+        JSON.stringify(retos),
+        id,
+      ];
 
       const [insertResult] = await global.db.query(insertQuery, insertValues);
 
@@ -71,7 +91,7 @@ const subirArchivo = async (req, res = response) => {
           id: insertResult.insertId,
           titulo: archivo.name,
           tipo: extension,
-          url: patharchivo,
+          url: nombreArchivo,
           id_escena: id,
         },
       });
@@ -85,7 +105,6 @@ const subirArchivo = async (req, res = response) => {
   });
 };
 
-// Nueva función para borrar archivos
 const borrarArchivo = async (req, res = response) => {
   const { nombreArchivo } = req.params;
 
@@ -97,10 +116,13 @@ const borrarArchivo = async (req, res = response) => {
     });
   }
 
-  const path = `${process.env.PATHUPLOAD || "uploads"}/${nombreArchivo}`;
+  const filePath = path.join(
+    process.env.PATHUPLOAD || "uploads",
+    nombreArchivo
+  );
 
   // Verificar si el archivo existe
-  if (!fs.existsSync(path)) {
+  if (!fs.existsSync(filePath)) {
     return res.status(404).json({
       ok: false,
       msg: "El archivo no existe",
@@ -109,7 +131,7 @@ const borrarArchivo = async (req, res = response) => {
 
   // Eliminar el archivo
   try {
-    fs.unlinkSync(path);
+    fs.unlinkSync(filePath);
     res.json({
       ok: true,
       msg: "Archivo eliminado correctamente",
@@ -149,7 +171,12 @@ const getFiles = (req, res) => {
 
   try {
     const fileBlobs = files.map((fileName) => {
-      const filePath = path.join(__dirname, "../uploads", fileName);
+      const filePath = path.join(
+        __dirname,
+        "../",
+        process.env.PATHUPLOAD || "uploads",
+        fileName
+      );
 
       if (!fs.existsSync(filePath)) {
         throw new Error(`El archivo ${fileName} no existe`);
